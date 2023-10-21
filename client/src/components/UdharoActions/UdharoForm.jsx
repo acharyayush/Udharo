@@ -7,7 +7,7 @@ const UdharoForm = ({ className }) => {
       <h1 className="text-center text-3xl font-bold uppercase text-brightGreen sm:text-2xl">
         Add a product
       </h1>
-      <div className="mx-auto my-8 grid max-w-[700px] grid-cols-2 gap-10 px-4">
+      <div className="xsm:px-0 mx-auto my-8 grid max-w-[700px] grid-cols-2 gap-10 px-4">
         <FormFieldRow
           htmlFor={"product"}
           label={"Product"}

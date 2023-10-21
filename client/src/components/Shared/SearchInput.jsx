@@ -3,18 +3,24 @@ import { twMerge } from "tailwind-merge"
 import { FaSearch } from "react-icons/fa"
 const SearchInput = ({
   className,
+  inputClassName,
   iconClassName,
   searchValue,
   setSearchValue,
 }) => {
   return (
-    <div className="search text-textColor relative h-fit w-fit">
+    <div
+      className={twMerge(
+        "search text-textColor relative h-fit w-fit",
+        className
+      )}
+    >
       <input
         type="text"
         placeholder="Search by Name"
         className={twMerge(
           "border-textColor placeholder:text-textColor rounded-3xl border-2 py-1 pl-4 pr-8 text-[0.9rem] outline-none",
-          className
+          inputClassName
         )}
         value={searchValue}
         onChange={(e) => setSearchValue(e.target.value)}

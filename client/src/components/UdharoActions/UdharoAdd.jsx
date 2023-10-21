@@ -4,7 +4,7 @@ import UdharoForm from "./UdharoForm"
 import UdharoTable from "./UdharoTable"
 const UdharoAdd = () => {
   return (
-    <div>
+    <div className="mx-auto w-[90%]">
       <CustomerProfile
         name="Ayush Acharya"
         phoneNumber="9864777435"

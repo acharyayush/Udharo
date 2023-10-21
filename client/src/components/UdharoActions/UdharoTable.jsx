@@ -40,6 +40,7 @@ const UdharoTable = ({ className, readonly }) => {
       return (
         <tr
           className={`text-center text-gray-900 ${index % 2 && "bg-green-100"}`}
+          key={index}
         >
           <td className="min-w-[70px] whitespace-nowrap border-r px-4 py-1.5 text-center text-base">
             {index + 1}
@@ -69,37 +70,41 @@ const UdharoTable = ({ className, readonly }) => {
     })
   }
   return (
-    <div className={twMerge("udharoProductList m-auto w-fit", className)}>
-      <h1 className="mb-4 text-left text-2xl font-bold uppercase text-brightGreen sm:text-2xl">
-        Udharo Products
-      </h1>
-      <table className="rounded-md shadow-md">
-        <thead>
-          <tr className="bg-brightGreen text-center text-white">
-            <th className="min-w-[70px] whitespace-nowrap border-r px-4 py-2 text-center text-lg font-medium">
-              SN
-            </th>
-            <th className="min-w-[250px] whitespace-nowrap border-r px-4 py-2 text-left text-lg font-medium">
-              Product Name
-            </th>
-            <th className="min-w-[100px] whitespace-nowrap border-r px-4 py-2 text-lg font-medium">
-              Quantity
-            </th>
-            <th className="min-w-[150px] whitespace-nowrap border-r px-4 py-2 text-lg font-medium">
-              Unit Price (NPR)
-            </th>
-            <th className="min-w-[150px] whitespace-nowrap border-r px-4 py-2 text-lg font-medium">
-              Total (NPR)
-            </th>
-            {!readonly && (
-              <th className="min-w-[70px] whitespace-nowrap px-4 py-2 text-lg font-medium">
-                Delete
+    <div
+      className={twMerge("udharoProductList m-auto overflow-x-auto", className)}
+    >
+      <div className="mx-auto w-fit">
+        <h1 className="mb-4 text-left text-2xl font-bold uppercase text-brightGreen">
+          Udharo Products
+        </h1>
+        <table className="rounded-md shadow-md">
+          <thead>
+            <tr className="bg-brightGreen text-center text-white">
+              <th className="min-w-[70px] whitespace-nowrap border-r px-4 py-2 text-center text-lg font-medium">
+                SN
               </th>
-            )}
-          </tr>
-        </thead>
-        <tbody>{renderTableBody()}</tbody>
-      </table>
+              <th className="min-w-[250px] whitespace-nowrap border-r px-4 py-2 text-left text-lg font-medium">
+                Product Name
+              </th>
+              <th className="min-w-[100px] whitespace-nowrap border-r px-4 py-2 text-lg font-medium">
+                Quantity
+              </th>
+              <th className="min-w-[150px] whitespace-nowrap border-r px-4 py-2 text-lg font-medium">
+                Unit Price (NPR)
+              </th>
+              <th className="min-w-[150px] whitespace-nowrap border-r px-4 py-2 text-lg font-medium">
+                Total (NPR)
+              </th>
+              {!readonly && (
+                <th className="min-w-[70px] whitespace-nowrap px-4 py-2 text-lg font-medium">
+                  Delete
+                </th>
+              )}
+            </tr>
+          </thead>
+          <tbody>{renderTableBody()}</tbody>
+        </table>
+      </div>
     </div>
   )
 }

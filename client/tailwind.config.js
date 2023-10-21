@@ -19,6 +19,8 @@ export default {
       md: { max: "767px" },
 
       sm: { max: "639px" },
+
+      xsm: { max: "330px" },
     },
     plugins: [],
   },

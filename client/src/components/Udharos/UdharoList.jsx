@@ -1,7 +1,7 @@
 import React from "react"
 import UdharoCard from "./UdharoCard"
 
-const UdharoList = ({ udharos }) => {
+const UdharoList = ({ udharos, screenSize }) => {
   return udharos.map(
     ({ id, customerImg, customerName, lastModified, amountLeft }) => (
       <UdharoCard
@@ -10,6 +10,7 @@ const UdharoList = ({ udharos }) => {
         customerName={customerName}
         lastModified={lastModified}
         amountLeft={amountLeft}
+        screenSize={screenSize}
         key={id}
       />
     )
