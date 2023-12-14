@@ -17,7 +17,7 @@ const TransactionCard = ({ createdAt, remark, total, action }) => {
       <h1
         className={`${
           action == "buy" ? "text-red-500" : "text-green-500"
-        } mt-1 text-xl`}
+        } mt-1 text-lg font-medium`}
       >
         NPR. {formattedTotal}
       </h1>

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react"
 import TotalUdharoCard from "./TotalUdharoCard"
 import UdharoList from "./UdharoList"
-import SearchInput from "../Shared/SearchInput"
-import Button from "../Shared/Button"
+import SearchInput from "../../Shared/SearchInput"
+import Button from "../../Shared/Button"
 import { AiOutlinePlus } from "react-icons/ai"
 const UdharosMain = () => {
   const udharos = [
