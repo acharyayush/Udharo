@@ -16,7 +16,7 @@ const Button = ({
   )
   iconClass = twMerge(`${isTrailingIcon ? "ml-1" : "mr-1"}`, iconClass)
   const renderBtnValue = () => {
-    if (!Icon) return <span>{value}</span>
+    if (!Icon) return <span className="w-full">{value}</span>
     if (!value)
       return <Icon className={twMerge("m-1 text-[1.05rem]", iconClass)} />
     if (!isTrailingIcon) {
