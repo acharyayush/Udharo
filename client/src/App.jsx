@@ -7,13 +7,15 @@ import UdharoAdd from "./components/Udharos/UdharoActions/UdharoAdd"
 import UdharoEdit from "./components/Udharos/UdharoActions/UdharoEdit"
 import UdharoDisplay from "./components/Udharos/UdharoActions/UdharoDisplay"
 import CustomerCreate from "./components/Customer/CustomerCreate"
+import Authentication from "./components/AuthForm/Authentication"
 const App = () => {
   return (
     <>
       <BrowserRouter>
-        <Nav />
+        {/* <Nav /> */}
         <Routes>
-          <Route path="/" element={<UdharosMain />} />
+          {/* <Route path="/" element={<UdharosMain />} /> */}
+          <Route path="/" element={<Authentication />} />
           <Route path="/udharos/:id" element={<UdharoDisplay />} />
           <Route path="/udharo/add/:id" element={<UdharoAdd />} />
           <Route path="/udharo/edit/:id" element={<UdharoEdit />} />

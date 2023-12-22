@@ -20,6 +20,8 @@ export default {
 
       sm: { max: "639px" },
 
+      sml: { max: "380px" },
+
       xsm: { max: "330px" },
     },
     plugins: [],
