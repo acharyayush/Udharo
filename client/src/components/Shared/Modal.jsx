@@ -40,6 +40,10 @@ const Modal = ({
                   "submitBtn ml-3 rounded-md border-2 border-red-500 bg-red-500 px-5 py-[7px] font-medium duration-200 hover:border-red-500 hover:bg-red-600 sm:text-sm",
                   submitClass
                 )}
+                onClick={() => {
+                  onSubmit()
+                  closeModal()
+                }}
                 value={submitVal}
               />
             )}

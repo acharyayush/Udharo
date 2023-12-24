@@ -1,43 +1,39 @@
 import React, { useEffect, useState } from "react"
+import axios from "axios"
 import TotalUdharoCard from "./TotalUdharoCard"
 import UdharoList from "./UdharoList"
 import SearchInput from "../../Shared/SearchInput"
 import Button from "../../Shared/Button"
 import { AiOutlinePlus } from "react-icons/ai"
+import toast from "../../../utils/toast"
+const BASEURL = "http://localhost:5000"
 const UdharosMain = () => {
-  const udharos = [
-    {
-      id: 1,
-      customerName: "Pukule Bahadur Chhettri",
-      lastModified: new Date("2018"),
-      amountLeft: 8466,
-    },
-    {
-      id: 2,
-      customerName: "Bablu Yadav",
-      lastModified: new Date("2015"),
-      amountLeft: 5249,
-    },
-    {
-      id: 3,
-      customerName: "Bhosdi Wale Chacha",
-      lastModified: new Date("2023"),
-      amountLeft: 4562,
-    },
-    {
-      id: 4,
-      customerName: "John Doe",
-      lastModified: new Date("2000"),
-      amountLeft: 4646546,
-    },
-  ]
+  //this should be removed
+  const sampleVendorId = "65865d8b75a727705c869123"
+  const [totalUdharo, setTotalUdharo] = useState(0)
+  const [customers, setCustomers] = useState([])
+  const [filteredCustomers, setFilteredCustomers] = useState([])
+  const [searchValue, setSearchValue] = useState("")
   const [screenSize, setScreenSize] = useState(window.innerWidth)
   const handleScreenResize = () => {
     setScreenSize(window.innerWidth)
   }
-  const [filteredUdharos, setFilteredUdharos] = useState(udharos)
-  const [searchValue, setSearchValue] = useState("")
 
+  useEffect(() => {
+    const fetchHomePageData = async () => {
+      try {
+        const { data } = await axios.get(
+          `${BASEURL}/api/${sampleVendorId}/customers/`
+        )
+        setTotalUdharo(data.totalUdharo)
+        setCustomers(data.customers)
+        setFilteredCustomers(data.customers)
+      } catch (err) {
+        toast("error", `${err.message}`)
+      }
+    }
+    fetchHomePageData()
+  }, [])
   useEffect(() => {
     window.addEventListener("resize", handleScreenResize)
     return () => {
@@ -45,25 +41,28 @@ const UdharosMain = () => {
     }
   })
   const filterByName = () => {
-    const filtered = udharos.filter(({ customerName }) =>
-      customerName.toLowerCase().includes(searchValue.toLowerCase())
+    const filtered = customers.filter(({ firstName, lastName }) =>
+      `${firstName} ${lastName}`
+        ?.toLowerCase()
+        .includes(searchValue?.toLowerCase())
     )
-    setFilteredUdharos(filtered)
+    setFilteredCustomers(filtered)
   }
   const sortByLastModified = () => {
-    const sorted = [...udharos].sort((a, b) => {
-      return b.lastModified.getTime() - a.lastModified.getTime()
+    const sorted = [...customers].sort((a, b) => {
+      return (
+        new Date(b.lastModified).getTime() - new Date(a.lastModified).getTime()
+      )
     })
-    setFilteredUdharos(sorted)
+    setFilteredCustomers(sorted)
   }
   const sortByAmountLeft = () => {
-    const sorted = [...udharos].sort((a, b) => {
+    const sorted = [...customers].sort((a, b) => {
       return b.amountLeft - a.amountLeft
     })
-    setFilteredUdharos(sorted)
+    setFilteredCustomers(sorted)
   }
   useEffect(() => {
-    //sorting by name
     filterByName()
   }, [searchValue])
   useEffect(() => {
@@ -72,8 +71,8 @@ const UdharosMain = () => {
   }, [])
   return (
     <div className="mx-auto min-h-screen w-[80%] sm:w-[90%]">
-      <TotalUdharoCard />
-      <div className="udharos mt-16">
+      <TotalUdharoCard totalUdharo={totalUdharo} />
+      <div className="customers mt-16">
         <div className="flex justify-end sm:mb-4">
           <SearchInput
             className={"sm:self-end"}
@@ -86,17 +85,18 @@ const UdharosMain = () => {
           />
           <Button
             className={"ml-2 w-fit rounded-full sm:px-1.5 sm:py-1"}
-            value={screenSize > 639 && "Add Udharo"}
+            value={screenSize > 639 && "Add Customer"}
             Icon={screenSize <= 639 && AiOutlinePlus}
             iconClass={"text-2xl m-0"}
             destination={"/createCustomer"}
           />
         </div>
         <h1 className="my-2 text-3xl font-bold text-brightGreen">Udharos</h1>
-        <UdharoList screenSize={screenSize} udharos={filteredUdharos} />
+        <UdharoList screenSize={screenSize} customers={filteredCustomers} />
       </div>
     </div>
   )
 }
 
 export default UdharosMain
+// '{"totalUdharos":12000,"customers":[{"id":1231,"name":"Ayush Acharya","lastModified":1213132132,"udharoLeft":1232}]}'

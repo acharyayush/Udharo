@@ -8,14 +8,17 @@ import UdharoEdit from "./components/Udharos/UdharoActions/UdharoEdit"
 import UdharoDisplay from "./components/Udharos/UdharoActions/UdharoDisplay"
 import CustomerCreate from "./components/Customer/CustomerCreate"
 import Authentication from "./components/AuthForm/Authentication"
+import { ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 const App = () => {
   return (
     <>
       <BrowserRouter>
-        {/* <Nav /> */}
+        <Nav />
         <Routes>
-          {/* <Route path="/" element={<UdharosMain />} /> */}
-          <Route path="/" element={<Authentication />} />
+          <Route path="/" element={<UdharosMain />} />
+          {/* <Route path="/" element={<Authentication />} /> */}
+          <Route path="/udharos/auth" element={<Authentication />} />
           <Route path="/udharos/:id" element={<UdharoDisplay />} />
           <Route path="/udharo/add/:id" element={<UdharoAdd />} />
           <Route path="/udharo/edit/:id" element={<UdharoEdit />} />
@@ -23,6 +26,18 @@ const App = () => {
         </Routes>
         <Footer />
       </BrowserRouter>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     </>
   )
 }

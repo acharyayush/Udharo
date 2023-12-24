@@ -1,17 +1,17 @@
 import React from "react"
 import UdharoCard from "./UdharoCard"
 
-const UdharoList = ({ udharos, screenSize }) => {
-  return udharos.map(
-    ({ id, customerImg, customerName, lastModified, amountLeft }) => (
+const UdharoList = ({ customers, screenSize }) => {
+  return customers.map(
+    ({ _id, avatar, firstName, lastName, lastModified, udharoLeft }) => (
       <UdharoCard
-        id={id}
-        customerImg={customerImg}
-        customerName={customerName}
+        id={_id}
+        avatar={avatar}
+        customerName={`${firstName} ${lastName}`}
         lastModified={lastModified}
-        amountLeft={amountLeft}
+        udharoLeft={udharoLeft}
         screenSize={screenSize}
-        key={id}
+        key={_id}
       />
     )
   )

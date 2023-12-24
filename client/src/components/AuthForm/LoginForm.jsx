@@ -28,7 +28,7 @@ const LoginForm = ({ className, setFormType }) => {
         name={"email"}
         inputClassName={"py-2"}
         inputValue={userDetails.email}
-        handleUserDetailChange={handleUserDetailChange}
+        handleInputChange={handleUserDetailChange}
       />
       <FormFieldRow
         inputType={showPassword ? "text" : "password"}
@@ -37,7 +37,7 @@ const LoginForm = ({ className, setFormType }) => {
         name={"password"}
         inputClassName={"py-2"}
         inputValue={userDetails.password}
-        handleUserDetailChange={handleUserDetailChange}
+        handleInputChange={handleUserDetailChange}
       >
         <EyeIcon
           showPassword={showPassword}

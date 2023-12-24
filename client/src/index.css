@@ -10,3 +10,17 @@ html {
   position: relative;
   padding-bottom: 80px;
 }
+
+/* react toastify styling */
+.successToast {
+  min-height: 45px !important;
+  background-color: #24cf85 !important;
+}
+.successProgressBar,
+.errorProgressBar {
+  background-color: white !important;
+}
+.errorToast {
+  min-height: 45px !important;
+  background-color: #ef4444 !important;
+}

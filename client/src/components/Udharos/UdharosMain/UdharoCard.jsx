@@ -2,38 +2,51 @@ import React, { useState, useEffect } from "react"
 import { BiUserCircle, BiEdit } from "react-icons/bi"
 import { BsFillTrashFill } from "react-icons/bs"
 import { GoAlertFill } from "react-icons/go"
+import axios from "axios"
 import Button from "../../Shared/Button"
 import { Link } from "react-router-dom"
 import Modal from "../../Shared/Modal"
+import toast from "../../../utils/toast"
 const UdharoCard = ({
   id,
-  customerImg,
+  avatar,
   customerName,
   lastModified,
-  amountLeft,
+  udharoLeft,
   screenSize,
 }) => {
   const [openModal, setOpenModal] = useState(false)
-  const formattedDate = lastModified.toLocaleDateString("en-US", {
+  const formattedDate = new Date(lastModified)?.toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
   })
-  const formattedAmount = amountLeft.toLocaleString("en-IN", {
+  const formattedAmount = Number(udharoLeft)?.toLocaleString("en-IN", {
     maximumFractionDigits: 2,
     minimumFractionDigits: 2,
   })
   const renderCustomerImage = () => {
-    if (customerImg) {
+    if (avatar) {
       return (
         <img
-          src={customerImg}
+          src={avatar}
           alt="customer img"
           className="h-44 w-44 rounded-l-xl object-cover"
         />
       )
     }
     return <BiUserCircle className="text-7xl text-brightGreen sm:mb-2" />
+  }
+  const deleteCustomer = async () => {
+    try {
+      const { data } = await axios.delete(
+        `http://localhost:5000/api/65865d8b75a727705c869123/customers/${id}/delete`
+      )
+      console.log(data)
+      toast("success", `Deleted Customer, ${customerName} 😁`)
+    } catch (err) {
+      toast("error", err.message)
+    }
   }
   return (
     <>
@@ -72,7 +85,7 @@ const UdharoCard = ({
       <Modal
         isOpen={openModal}
         closeModal={() => setOpenModal(false)}
-        onSubmit={() => {}}
+        onSubmit={deleteCustomer}
         submitVal={"Delete"}
       >
         <GoAlertFill className="mx-auto text-8xl text-red-500 sm:text-6xl" />
