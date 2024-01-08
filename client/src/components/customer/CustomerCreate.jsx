@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react"
+import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 import { IoMdCloudUpload } from "react-icons/io"
-import axios from "axios"
 import FormFieldRow from "../Shared/FormFieldRow"
 import PhotoInput from "../Shared/PhotoInput"
-import { useNavigate } from "react-router-dom"
 import Button from "../Shared/Button"
+import { useCustomerCreate } from "../../customHooks/mutate"
 import toast from "../../utils/toast"
 const CustomerCreate = () => {
   const navigate = useNavigate()
@@ -14,6 +14,19 @@ const CustomerCreate = () => {
     phoneNumber: "",
     avatar: "",
   })
+  const { mutate: createCustomer, isPending } = useCustomerCreate()
+
+  const handleFormSubmit = () => {
+    //handling front end customerDetail validation
+    // .............
+    //validation finishes
+    createCustomer(customerDetail, {
+      onSuccess: (data) => {
+        navigate("/")
+        toast(data.status, data.message)
+      },
+    })
+  }
   const handleCustomerDetailChange = (e) => {
     if (e.target.name === "phoneNumber") {
       //only take digits
@@ -24,21 +37,7 @@ const CustomerCreate = () => {
       [e.target.name]: e.target.value,
     })
   }
-  const handleFormSubmit = async (e) => {
-    //validation starts
 
-    //validation successfull
-    try {
-      const { data } = await axios.post(
-        `http://localhost:5000/api/65865d8b75a727705c869123/customers/add`,
-        customerDetail
-      )
-      navigate("/")
-      toast("success", "New customer is created 😁")
-    } catch (err) {
-      toast("error", err.message)
-    }
-  }
   return (
     <form onSubmit={() => e.preventDefault()}>
       <div className="mx-auto my-12 grid max-w-[700px] grid-cols-2 gap-10 px-4">
@@ -47,21 +46,21 @@ const CustomerCreate = () => {
           label={"First Name"}
           className={"sm:col-span-2"}
           inputValue={customerDetail.firstName}
-          handleInputChange={handleCustomerDetailChange}
+          onChange={handleCustomerDetailChange}
         />
         <FormFieldRow
           name={"lastName"}
           label={"Last Name"}
           className={"sm:col-span-2"}
           inputValue={customerDetail.lastName}
-          handleInputChange={handleCustomerDetailChange}
+          onChange={handleCustomerDetailChange}
         />
         <FormFieldRow
           name={"phoneNumber"}
           label={"Phone Number"}
           className={" col-span-2"}
           inputValue={customerDetail.phone}
-          handleInputChange={handleCustomerDetailChange}
+          onChange={handleCustomerDetailChange}
         />{" "}
         <PhotoInput
           name={"avatar"}
@@ -69,7 +68,8 @@ const CustomerCreate = () => {
           isOptional
           className="col-span-2"
           inputValue={customerDetail.avatar}
-          handleInputChange={handleCustomerDetailChange}
+          //this need to be managed later
+          onChange={handleCustomerDetailChange}
         />
         <Button
           className={
@@ -80,6 +80,7 @@ const CustomerCreate = () => {
           iconClass={"text-xl ml-2"}
           isTrailingIcon
           onClick={handleFormSubmit}
+          isDisable={isPending}
         />
       </div>
     </form>

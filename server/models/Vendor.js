@@ -25,13 +25,9 @@ const vendorSchema = new Schema({
     maxlength: 10,
     unique: true,
   },
-  totalUdharo: {
-    type: Number,
-    default: 0,
-  },
   customers: [
     {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "Customer",
     },
   ],

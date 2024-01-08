@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
 
 const Schema = mongoose.Schema;
 
@@ -29,6 +29,10 @@ const customerSchema = new Schema({
     type: Number,
     default: 0,
   },
+  associatedVendor: {
+    type: Schema.Types.ObjectId,
+    ref: "Vendor",
+  },
   products: [
     {
       name: {
@@ -52,14 +56,17 @@ const customerSchema = new Schema({
   ],
   transactionHistory: [
     {
-      remarks: {
+      remark: {
         type: String,
         required: true,
       },
-
+      amount: {
+        type: Number,
+        required: true,
+      },
       action: {
         type: String,
-        enum: ["BUY", "PAY", "DELETE"],
+        enum: ["BUY", "REPAY", "DELETE"],
         required: true,
       },
       date: {

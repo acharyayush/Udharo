@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 import { BiSolidUserCircle, BiSolidCaretDownCircle } from "react-icons/bi"
 import DropDown from "./DropDown"
 import { twMerge } from "tailwind-merge"
@@ -30,7 +30,7 @@ const Profile = ({ className }) => {
     >
       <div className="myProfile" onClick={toggleDropDown}>
         <BiSolidUserCircle className=" text-[2.5rem] text-[#003a1f]" />
-        <BiSolidCaretDownCircle className="bg-textColor text-white absolute bottom-1 right-1 rounded-full text-base" />
+        <BiSolidCaretDownCircle className="bg-textColor absolute bottom-1 right-1 rounded-full text-base text-white" />
       </div>
       {isOpen && <DropDown onClick={stayAsItIs} />}
     </div>

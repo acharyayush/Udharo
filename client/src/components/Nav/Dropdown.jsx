@@ -1,17 +1,20 @@
-import React from "react"
 import { FaSignOutAlt } from "react-icons/fa"
 import { BiSolidUserCircle } from "react-icons/bi"
+import { useQueryClient } from "@tanstack/react-query"
 const DropDown = ({ onClick }) => {
+  const queryClient = useQueryClient()
+  const data = queryClient.getQueryData(["homepage"])
+  const vendorName = `${data?.firstName} ${data?.lastName}`
   return (
     <div
       onClick={onClick}
-      className="dropdown bg-white text-textColor absolute -right-2 top-12 z-50 min-h-[200px] w-max min-w-[250px] rounded-lg p-6"
+      className="dropdown text-textColor absolute -right-2 top-12 z-50 min-h-[200px] w-max min-w-[250px] rounded-lg bg-white p-6"
     >
-      <div className="border-slate-300 mb-4 flex cursor-default items-center border-b-2 py-3">
+      <div className="mb-4 flex cursor-default items-center border-b-2 border-slate-300 py-3">
         <BiSolidUserCircle className="mr-2 w-12 text-[2.5rem]" />
-        <h3 className="text-lg font-bold">Ayush Acharya</h3>
+        <h3 className="text-lg font-bold">{vendorName}</h3>
       </div>
-      <div className="hover:border-slate-300 hover:bg-gray-100 mb-4 flex cursor-pointer items-center rounded-md py-3 hover:border-b-2">
+      <div className="mb-4 flex cursor-pointer items-center rounded-md py-3 hover:border-b-2 hover:border-slate-300 hover:bg-gray-100">
         <FaSignOutAlt className="mr-2 w-12 text-[1.8rem]" />
         <h3 className="text-lg font-bold">Log Out</h3>
       </div>

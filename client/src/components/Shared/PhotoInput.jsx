@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { BiPhotoAlbum } from "react-icons/bi"
 import Button from "./Button"
 const PhotoInput = ({ label, isOptional, className }) => {

@@ -1,57 +1,93 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import Button from "../../Shared/Button"
 import { BsFillTrashFill } from "react-icons/bs"
 import { twMerge } from "tailwind-merge"
 import Modal from "../../Shared/Modal"
 import { GoAlertFill } from "react-icons/go"
-
-const UdharoTable = ({ className, readonly }) => {
+import { useProductDelete } from "../../../customHooks/mutate"
+import Skeleton from "react-loading-skeleton"
+import toast from "../../../utils/toast"
+import { useParams } from "react-router-dom"
+import { useQueryClient } from "@tanstack/react-query"
+const UdharoTable = ({ className, readonly, products }) => {
+  const { customerId } = useParams()
+  const queryClient = useQueryClient()
   const [openModal, setOpenModal] = useState(false)
-  const [productAboutToDelete, setProductAboutToDelete] = useState(null)
-  const udharosOfAyush = [
-    {
-      product: "Egg",
-      quantity: 30,
-      unitPrice: 18,
-    },
-    {
-      product: "Tooth Brush",
-      quantity: 2,
-      unitPrice: 40,
-    },
-    {
-      product: "Current Noodle",
-      quantity: 30,
-      unitPrice: 50,
-    },
-    {
-      product: "Potato",
-      quantity: 2,
-      unitPrice: 55,
-    },
-    {
-      product: "Chini",
-      quantity: 1,
-      unitPrice: 95,
-    },
-    {
-      product: "Rice",
-      quantity: 20,
-      unitPrice: 45,
-    },
-  ]
+  const [productToDelete, setProductToDelete] = useState({})
+  const { mutate: deleteProduct, isPending } = useProductDelete()
+  const renderSkeleton = (count) => {
+    return Array(count)
+      .fill(0)
+      .map((el, idx) => {
+        {
+          return (
+            <tr
+              key={`row-${idx}`}
+              className={`${idx === count - 1 && "border-b"}`}
+            >
+              {Array(5)
+                .fill(0)
+                .map((el, index) => {
+                  return (
+                    <td
+                      key={`col-${index}`}
+                      className="border-r px-4 py-1.5 text-center text-base"
+                    >
+                      <Skeleton />
+                    </td>
+                  )
+                })}
+              {!readonly && (
+                <td className="min-w-[70px] whitespace-nowrap px-4 py-1.5 text-base">
+                  <Skeleton />
+                </td>
+              )}
+            </tr>
+          )
+        }
+      })
+  }
+  const renderEmptyRow = () => {
+    return (
+      <tr className={`border-b bg-green-100 text-center text-gray-900`}>
+        {Array(5)
+          .fill(0)
+          .map((el, index) => {
+            return (
+              <td
+                key={`empty-row-${index}`}
+                className="border-r px-4 py-1.5 text-center text-base"
+              >
+                -
+              </td>
+            )
+          })}
+        {!readonly && (
+          <td className="min-w-[70px] whitespace-nowrap px-4 py-1.5 text-base">
+            -
+          </td>
+        )}
+      </tr>
+    )
+  }
   const renderTableBody = () => {
-    return udharosOfAyush.map(({ product, quantity, unitPrice }, index) => {
+    if (!products) {
+      return renderSkeleton(5)
+    }
+    if (products.length === 0) return renderEmptyRow()
+    return products.map(({ _id, name, quantity, unitPrice }, index) => {
       return (
         <tr
-          className={`text-center text-gray-900 ${index % 2 && "bg-green-100"}`}
-          key={index}
+          className={`text-center text-gray-900 ${
+            index % 2 && "bg-green-100"
+          } ${index == products.length - 1 && "border-b"}`}
+          key={_id}
         >
           <td className="min-w-[70px] whitespace-nowrap border-r px-4 py-1.5 text-center text-base">
             {index + 1}
           </td>
           <td className="min-w-[250px] whitespace-nowrap border-r px-4 py-1.5 text-left text-base">
-            {product}
+            {name}
           </td>
           <td className="min-w-[100px] whitespace-nowrap border-r px-4 py-1.5 text-base">
             {quantity}
@@ -68,7 +104,7 @@ const UdharoTable = ({ className, readonly }) => {
                 Icon={BsFillTrashFill}
                 className={"rounded-full bg-red-500 p-1"}
                 onClick={() => {
-                  setProductAboutToDelete(product)
+                  setProductToDelete({ productId: _id, name, quantity })
                   setOpenModal(true)
                 }}
               />
@@ -82,13 +118,13 @@ const UdharoTable = ({ className, readonly }) => {
     <>
       <div
         className={twMerge(
-          "udharoProductList m-auto overflow-x-auto",
+          `udharoProductList m-auto overflow-x-auto`,
           className
         )}
       >
         <div className="mx-auto w-fit">
           <h1 className="mb-4 text-left text-2xl font-bold uppercase text-brightGreen">
-            Udharo Products
+            Products
           </h1>
           <table className="rounded-md shadow-md">
             <thead>
@@ -122,16 +158,31 @@ const UdharoTable = ({ className, readonly }) => {
       <Modal
         isOpen={openModal}
         closeModal={() => setOpenModal(false)}
-        onSubmit={() => {}}
+        onSubmit={() => {
+          const { productId } = productToDelete
+          deleteProduct(
+            { productId, customerId },
+            {
+              onSuccess: (data) => {
+                queryClient.invalidateQueries(["products", customerId])
+                toast(data.status, data.message)
+                setOpenModal(false)
+              },
+              onError: () => toast("error", "Unable to delete product 😕"),
+            }
+          )
+        }}
         submitVal={"Delete"}
+        isSubmissionPending={isPending}
       >
         <GoAlertFill className="mx-auto text-8xl text-red-500 sm:text-6xl" />
         <h1 className="mt-4 text-center text-2xl font-bold sm:text-[1.35rem] sm:leading-[1.85rem] xsm:text-xl">
           Are you sure you want to Delete?
         </h1>
         <p className="my-2 text-center text-base font-medium sm:text-[0.95rem] sm:leading-[1.45rem] xsm:text-sm">
-          Do you want to delete {productAboutToDelete} from udharo products?
-          This process cannot be undone.
+          Do you want to delete {productToDelete?.quantity}{" "}
+          {productToDelete?.name} from udharo products? This process cannot be
+          undone.
         </p>
       </Modal>
     </>

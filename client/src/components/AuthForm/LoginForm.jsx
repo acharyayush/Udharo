@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import Button from "../Shared/Button"
 import { Link } from "react-router-dom"
 import EyeIcon from "../Shared/EyeIcon"
@@ -28,7 +28,7 @@ const LoginForm = ({ className, setFormType }) => {
         name={"email"}
         inputClassName={"py-2"}
         inputValue={userDetails.email}
-        handleInputChange={handleUserDetailChange}
+        onChange={handleUserDetailChange}
       />
       <FormFieldRow
         inputType={showPassword ? "text" : "password"}
@@ -37,7 +37,7 @@ const LoginForm = ({ className, setFormType }) => {
         name={"password"}
         inputClassName={"py-2"}
         inputValue={userDetails.password}
-        handleInputChange={handleUserDetailChange}
+        onChange={handleUserDetailChange}
       >
         <EyeIcon
           showPassword={showPassword}

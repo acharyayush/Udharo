@@ -1,40 +1,18 @@
-import React from "react"
+import { useParams } from "react-router-dom"
 import TransactionCard from "./TransactionCard"
+import TransactionCardSkeleton from "../../Skeletons/TransactionCardSkeleton"
+import { useTransactionHistory } from "../../../customHooks/query"
 const TransactionList = () => {
-  const history = [
-    {
-      remark: "Bought 13 chowmein each of NPR 35",
-      action: "buy",
-      total: 325,
-      createdAt: new Date(2016),
-    },
-    {
-      remark: "Bought 10 waiwai each of NPR 20",
-      action: "buy",
-      total: 200,
-      createdAt: new Date(2018),
-    },
-    {
-      remark: "Paid for 10 waiwai each of NPR 20",
-      action: "pay",
-      total: 200,
-      createdAt: new Date(2019),
-    },
-    {
-      remark: "Removed 13 waiwai each of NPR 35",
-      action: "remove",
-      total: 325000,
-      createdAt: new Date(2020),
-    },
-  ]
+  const { customerId } = useParams()
+  const { data } = useTransactionHistory(customerId)
   const renderTransactionList = () => {
-    return history.map(({ remark, action, total, createdAt }, index) => {
+    return data?.map(({ remark, action, amount, date }, index) => {
       return (
         <TransactionCard
           remark={remark}
           action={action}
-          total={total}
-          createdAt={createdAt}
+          amount={amount}
+          date={date}
           key={index}
         />
       )
@@ -45,7 +23,11 @@ const TransactionList = () => {
       <h1 className="mb-4 mt-14 text-left text-2xl font-bold uppercase text-brightGreen sm:text-2xl">
         Transaction History
       </h1>
-      {renderTransactionList()}
+      {!data && <TransactionCardSkeleton count={5} />}
+      {data?.length === 0 && (
+        <h1 className="mt-2 text-lg">No transaction History</h1>
+      )}
+      {data && renderTransactionList()}
     </div>
   )
 }

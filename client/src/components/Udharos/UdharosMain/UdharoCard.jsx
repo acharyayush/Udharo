@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 import { BiUserCircle, BiEdit } from "react-icons/bi"
 import { BsFillTrashFill } from "react-icons/bs"
 import { GoAlertFill } from "react-icons/go"
-import axios from "axios"
 import Button from "../../Shared/Button"
 import { Link } from "react-router-dom"
 import Modal from "../../Shared/Modal"
+import { useCustomerDelete } from "../../../customHooks/mutate"
+import { useQueryClient } from "@tanstack/react-query"
 import toast from "../../../utils/toast"
 const UdharoCard = ({
   id,
@@ -16,6 +17,8 @@ const UdharoCard = ({
   screenSize,
 }) => {
   const [openModal, setOpenModal] = useState(false)
+  const queryClient = useQueryClient()
+  const { mutate: deleteCustomer, isPending } = useCustomerDelete()
   const formattedDate = new Date(lastModified)?.toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
@@ -37,22 +40,12 @@ const UdharoCard = ({
     }
     return <BiUserCircle className="text-7xl text-brightGreen sm:mb-2" />
   }
-  const deleteCustomer = async () => {
-    try {
-      const { data } = await axios.delete(
-        `http://localhost:5000/api/65865d8b75a727705c869123/customers/${id}/delete`
-      )
-      console.log(data)
-      toast("success", `Deleted Customer, ${customerName} 😁`)
-    } catch (err) {
-      toast("error", err.message)
-    }
-  }
+
   return (
     <>
       <div className="UdharoCard relative mt-4 flex min-w-[425px] cursor-pointer items-center rounded-md bg-white p-4 shadow-md duration-200 hover:scale-[1.02] sm:min-w-fit sm:flex-col">
         <Link
-          to={`udharos/${id}`}
+          to={`/${id}`}
           className="absolute left-0 top-0 h-full w-full"
         ></Link>
         <div>{renderCustomerImage()}</div>
@@ -78,15 +71,24 @@ const UdharoCard = ({
             }
             value={screenSize > 767 || screenSize < 639 ? "Edit" : ""}
             Icon={BiEdit}
-            destination={`/udharo/edit/${id}`}
+            destination={`/${id}/edit`}
           />
         </div>
       </div>
       <Modal
         isOpen={openModal}
         closeModal={() => setOpenModal(false)}
-        onSubmit={deleteCustomer}
+        onSubmit={() =>
+          deleteCustomer(id, {
+            onSuccess: (data) => {
+              queryClient.invalidateQueries(["homepage"])
+              toast(data.status, data.message)
+            },
+            onSettled: () => setOpenModal(false),
+          })
+        }
         submitVal={"Delete"}
+        isSubmissionPending={isPending}
       >
         <GoAlertFill className="mx-auto text-8xl text-red-500 sm:text-6xl" />
         <h1 className="mt-4 text-center text-2xl font-bold sm:text-[1.35rem] sm:leading-[1.85rem] xsm:text-xl">

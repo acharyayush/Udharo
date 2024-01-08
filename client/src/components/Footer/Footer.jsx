@@ -1,4 +1,3 @@
-import React from "react"
 const Footer = () => {
   return (
     <section className="FooterSection absolute bottom-0 w-full bg-white py-6 text-base">

@@ -1,9 +1,8 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import Button from "../Shared/Button"
-import { Link } from "react-router-dom"
 import EyeIcon from "../Shared/EyeIcon"
 import FormFieldRow from "../Shared/FormFieldRow"
-const SignupForm = ({ className, setFormType }) => {
+const SignupForm = ({ className }) => {
   const [userDetails, setUserDetails] = useState({
     firstName: "",
     lastName: "",
@@ -18,10 +17,6 @@ const SignupForm = ({ className, setFormType }) => {
       [e.target.name]: e.target.value,
     })
   }
-  const handleFormType = (e) => {
-    e.preventDefault()
-    setFormType("Signup")
-  }
   return (
     <form action="/login" method="post" className={className}>
       <div className="name grid grid-cols-2 gap-4">
@@ -32,7 +27,7 @@ const SignupForm = ({ className, setFormType }) => {
           name={"firstName"}
           inputClassName={"py-2"}
           inputValue={userDetails.firstName}
-          handleUserDetailChange={handleUserDetailChange}
+          onChange={handleUserDetailChange}
         />
         <FormFieldRow
           inputType={"text"}
@@ -41,7 +36,7 @@ const SignupForm = ({ className, setFormType }) => {
           name={"lastName"}
           inputClassName={"py-2"}
           inputValue={userDetails.lastName}
-          handleUserDetailChange={handleUserDetailChange}
+          onChange={handleUserDetailChange}
         />
       </div>
       <FormFieldRow
@@ -51,7 +46,7 @@ const SignupForm = ({ className, setFormType }) => {
         name={"email"}
         inputClassName={"py-2"}
         inputValue={userDetails.email}
-        handleUserDetailChange={handleUserDetailChange}
+        onChange={handleUserDetailChange}
       />
       <FormFieldRow
         inputType={"text"}
@@ -60,7 +55,7 @@ const SignupForm = ({ className, setFormType }) => {
         name={"phoneNumber"}
         inputClassName={"py-2"}
         inputValue={userDetails.phone}
-        handleUserDetailChange={handleUserDetailChange}
+        onChange={handleUserDetailChange}
       />
       <FormFieldRow
         inputType={showPassword ? "text" : "password"}
@@ -69,7 +64,7 @@ const SignupForm = ({ className, setFormType }) => {
         name={"password"}
         inputClassName={"py-2"}
         inputValue={userDetails.password}
-        handleUserDetailChange={handleUserDetailChange}
+        onChange={handleUserDetailChange}
       >
         <EyeIcon
           showPassword={showPassword}

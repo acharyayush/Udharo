@@ -1,4 +1,3 @@
-import React from "react"
 import { twMerge } from "tailwind-merge"
 import { FaSearch } from "react-icons/fa"
 const SearchInput = ({

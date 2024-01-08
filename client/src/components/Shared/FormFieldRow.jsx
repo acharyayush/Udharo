@@ -1,4 +1,3 @@
-import React from "react"
 import { twMerge } from "tailwind-merge"
 
 const FormFieldRow = ({
@@ -9,7 +8,7 @@ const FormFieldRow = ({
   className,
   inputClassName,
   inputValue,
-  handleInputChange,
+  onChange,
   isOptional,
 }) => {
   return (
@@ -20,7 +19,7 @@ const FormFieldRow = ({
       >
         {label} {isOptional && "(optional)"}
       </label>
-      <div className="mt-1">
+      <div>
         <input
           type={inputType || "text"}
           name={name}
@@ -29,7 +28,7 @@ const FormFieldRow = ({
             inputClassName
           )}
           value={inputValue}
-          onChange={handleInputChange}
+          onChange={onChange}
           placeholder={placeholder}
         />
       </div>

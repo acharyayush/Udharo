@@ -1,12 +1,10 @@
-import React from "react"
-
-const TransactionCard = ({ createdAt, remark, total, action }) => {
-  const formattedDate = createdAt.toLocaleDateString("en-US", {
+const TransactionCard = ({ date, remark, amount, action }) => {
+  const formattedDate = new Date(date)?.toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
   })
-  const formattedTotal = total.toLocaleString("en-IN", {
+  const formattedTotal = amount?.toLocaleString("en-IN", {
     maximumFractionDigits: 2,
     minimumFractionDigits: 2,
   })
@@ -16,7 +14,7 @@ const TransactionCard = ({ createdAt, remark, total, action }) => {
       <p className="text-lg font-medium ">{remark}</p>
       <h1
         className={`${
-          action == "buy" ? "text-red-500" : "text-green-500"
+          action == "BUY" ? "text-red-500" : "text-green-500"
         } mt-1 text-lg font-medium`}
       >
         NPR. {formattedTotal}

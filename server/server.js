@@ -2,6 +2,7 @@ import express from "express";
 import { connectDB } from "./config/db.js";
 import cors from "cors";
 import customerRoutes from "./routes/customers.js";
+import productRoutes from "./routes/products.js";
 const app = express();
 //Connect to the database
 connectDB();
@@ -18,7 +19,15 @@ app.use(
   },
   customerRoutes
 );
-
+app.use(
+  "/api/:id/customers/:customerId/products",
+  (req, res, next) => {
+    req.id = req.params.id;
+    req.customerId = req.params.customerId;
+    next();
+  },
+  productRoutes
+);
 const port = process.env.PORT || 5000;
 
 //Define the routes
