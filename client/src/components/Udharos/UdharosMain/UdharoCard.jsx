@@ -7,9 +7,10 @@ import { Link } from "react-router-dom"
 import Modal from "../../Shared/Modal"
 import { useCustomerDelete } from "../../../customHooks/mutate"
 import { useQueryClient } from "@tanstack/react-query"
+import { useSelector } from "react-redux"
 import toast from "../../../utils/toast"
 const UdharoCard = ({
-  id,
+  customerId,
   avatar,
   customerName,
   lastModified,
@@ -28,6 +29,7 @@ const UdharoCard = ({
     maximumFractionDigits: 2,
     minimumFractionDigits: 2,
   })
+  const {id:vendorId} = useSelector((state) => state.vendor)
   const renderCustomerImage = () => {
     if (avatar) {
       return (
@@ -45,7 +47,7 @@ const UdharoCard = ({
     <>
       <div className="UdharoCard relative mt-4 flex min-w-[425px] cursor-pointer items-center rounded-md bg-white p-4 shadow-md duration-200 hover:scale-[1.02] sm:min-w-fit sm:flex-col">
         <Link
-          to={`/${id}`}
+          to={`/${customerId}`}
           className="absolute left-0 top-0 h-full w-full"
         ></Link>
         <div>{renderCustomerImage()}</div>
@@ -71,7 +73,7 @@ const UdharoCard = ({
             }
             value={screenSize > 767 || screenSize < 639 ? "Edit" : ""}
             Icon={BiEdit}
-            destination={`/${id}/edit`}
+            destination={`/${customerId}/edit`}
           />
         </div>
       </div>
@@ -79,13 +81,16 @@ const UdharoCard = ({
         isOpen={openModal}
         closeModal={() => setOpenModal(false)}
         onSubmit={() =>
-          deleteCustomer(id, {
-            onSuccess: (data) => {
-              queryClient.invalidateQueries(["homepage"])
-              toast(data.status, data.message)
-            },
-            onSettled: () => setOpenModal(false),
-          })
+          deleteCustomer(
+            {vendorId, customerId },
+            {
+              onSuccess: (data) => {
+                queryClient.invalidateQueries(["homepage"])
+                toast(data.status, data.message)
+              },
+              onSettled: () => setOpenModal(false),
+            }
+          )
         }
         submitVal={"Delete"}
         isSubmissionPending={isPending}

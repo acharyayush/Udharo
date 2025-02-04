@@ -1,10 +1,9 @@
 import { FaSignOutAlt } from "react-icons/fa"
 import { BiSolidUserCircle } from "react-icons/bi"
-import { useQueryClient } from "@tanstack/react-query"
+import { useSelector } from "react-redux"
 const DropDown = ({ onClick }) => {
-  const queryClient = useQueryClient()
-  const data = queryClient.getQueryData(["homepage"])
-  const vendorName = `${data?.firstName} ${data?.lastName}`
+  const {firstName, lastName, email, avatar} = useSelector(state=>state.vendor)
+  const vendorName = `${firstName} ${lastName}`
   return (
     <div
       onClick={onClick}

@@ -3,8 +3,9 @@ import Customer from "../models/Customer.js";
 const getHomePageDetails = async (req, res, next) => {
   try {
     //get vendor with all customers
+    const id = req.params.id;
     const vendorDetail = await Vendor.findById(
-      req.id,
+      id,
       "firstName lastName customers"
     ).populate({
       path: "customers",
@@ -21,31 +22,29 @@ const getHomePageDetails = async (req, res, next) => {
     );
     res.json({ ...vendorDetail.toObject(), totalUdharo });
   } catch (err) {
-    console.log(err);
     next(err);
   }
 };
 const getTransactionHistory = async (req, res, next) => {
   try {
-    const { customerId } = req.params;
+    const { id:vendorId, customerId } = req.params;
     const { transactionHistory } = await Customer.findOne({
       _id: customerId,
-      associatedVendor: req.id,
+      associatedVendor: vendorId,
     });
     res.json(transactionHistory.reverse());
   } catch (err) {
-    console.log(err);
     next(err);
   }
 };
 const addCustomer = async (req, res, next) => {
   try {
-    const customerDetail = { ...req.body, associatedVendor: req.id };
+    const vendorId = req.params.id;
+    const customerDetail = { ...req.body, associatedVendor: vendorId };
     const customer = await Customer.create(customerDetail);
     await Vendor.findByIdAndUpdate(
-      req.id,
+      vendorId,
       { $push: { customers: customer.id } },
-      { new: true, select: "customers" }
     );
     res
       .status(201)
@@ -56,11 +55,12 @@ const addCustomer = async (req, res, next) => {
 };
 const deleteCustomer = async (req, res, next) => {
   try {
+    const {id:vendorId, customerId} = req.params;
     const { firstName, lastName } = await Customer.findByIdAndDelete(
-      req.params.customerId
+      customerId
     );
-    const deletedCustomer = await Vendor.findByIdAndUpdate(req.id, {
-      $pull: { customers: req.params.customerId },
+    const deletedCustomer = await Vendor.findByIdAndUpdate(vendorId, {
+      $pull: { customers: customerId },
     });
     if (!deletedCustomer) {
       return res
@@ -72,13 +72,12 @@ const deleteCustomer = async (req, res, next) => {
       status: "success",
     });
   } catch (err) {
-    console.log(err);
     next(err);
   }
 };
 const payUdharo = async (req, res, next) => {
   try {
-    const { customerId } = req.params;
+    const { id:vendorId, customerId } = req.params;
     const { amount } = req.body;
     const remark = `Repaid NPR ${amount}`;
     const action = "REPAY";
@@ -87,7 +86,7 @@ const payUdharo = async (req, res, next) => {
 
     const customer = await Customer.findOne({
       _id: customerId,
-      associatedVendor: req.id,
+      associatedVendor: vendorId,
     });
     if (customer.udharoLeft < amount)
       return res.json({

@@ -7,14 +7,14 @@ import Button from "../../Shared/Button"
 import { AiOutlinePlus } from "react-icons/ai"
 import { useQueryClient } from "@tanstack/react-query"
 import { useHomeQuery } from "../../../customHooks/query"
-
+import { useSelector } from "react-redux"
 const UdharosMain = () => {
   let initialFilteredCustomer
   const [searchValue, setSearchValue] = useState("")
   const [screenSize, setScreenSize] = useState(window.innerWidth)
-
+  const {id:vendorId} = useSelector((state)=>state.vendor)
   const queryClient = useQueryClient()
-  const { data, isError } = useHomeQuery()
+  const { data, isError } = useHomeQuery(vendorId)
 
   //if there has not been searching involved yet, then make customers filter by last modified
   if (!data?.filteredCustomer) {

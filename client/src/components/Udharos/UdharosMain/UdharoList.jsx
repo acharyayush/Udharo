@@ -18,7 +18,7 @@ const UdharoList = ({ customers, screenSize, isSearching }) => {
   return customers.map(
     ({ _id, avatar, firstName, lastName, lastModified, udharoLeft }) => (
       <UdharoCard
-        id={_id}
+        customerId={_id}
         avatar={avatar}
         customerName={`${firstName} ${lastName}`}
         lastModified={lastModified}

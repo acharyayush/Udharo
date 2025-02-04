@@ -9,12 +9,14 @@ import Skeleton from "react-loading-skeleton"
 import toast from "../../../utils/toast"
 import { useParams } from "react-router-dom"
 import { useQueryClient } from "@tanstack/react-query"
+import { useSelector } from "react-redux"
 const UdharoTable = ({ className, readonly, products }) => {
   const { customerId } = useParams()
   const queryClient = useQueryClient()
   const [openModal, setOpenModal] = useState(false)
   const [productToDelete, setProductToDelete] = useState({})
   const { mutate: deleteProduct, isPending } = useProductDelete()
+  const {id:vendorId} = useSelector((state)=>state.vendor);
   const renderSkeleton = (count) => {
     return Array(count)
       .fill(0)
@@ -161,7 +163,7 @@ const UdharoTable = ({ className, readonly, products }) => {
         onSubmit={() => {
           const { productId } = productToDelete
           deleteProduct(
-            { productId, customerId },
+            { productId, customerId, vendorId },
             {
               onSuccess: (data) => {
                 queryClient.invalidateQueries(["products", customerId])

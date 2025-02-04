@@ -4,10 +4,12 @@ import UdharoSummary from "./UdharoSummary"
 import UdharoPay from "./UdharoPay"
 import UdharoTable from "./UdharoTable"
 import UdharoAddForm from "./UdharoAddForm"
+import { useSelector } from "react-redux"
 import { useProductsAndUdharoQuery } from "../../../customHooks/query"
 const UdharoEdit = () => {
   const { customerId } = useParams()
-  const { data, isError } = useProductsAndUdharoQuery(customerId)
+  const {id:vendorId} = useSelector(state=>state.vendor)
+  const { data, isError } = useProductsAndUdharoQuery(vendorId, customerId)
   if (isError) return
   return (
     <div className="mx-auto w-[90%]">

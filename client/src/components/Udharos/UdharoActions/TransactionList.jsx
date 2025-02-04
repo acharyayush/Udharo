@@ -2,9 +2,11 @@ import { useParams } from "react-router-dom"
 import TransactionCard from "./TransactionCard"
 import TransactionCardSkeleton from "../../Skeletons/TransactionCardSkeleton"
 import { useTransactionHistory } from "../../../customHooks/query"
+import { useSelector } from "react-redux"
 const TransactionList = () => {
   const { customerId } = useParams()
-  const { data } = useTransactionHistory(customerId)
+  const {id:vendorId} = useSelector(state=>state.vendor)
+  const { data } = useTransactionHistory(vendorId, customerId)
   const renderTransactionList = () => {
     return data?.map(({ remark, action, amount, date }, index) => {
       return (

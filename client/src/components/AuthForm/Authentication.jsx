@@ -13,7 +13,7 @@ const Authentication = () => {
       className="authentication grid min-h-screen place-content-center"
       style={gradientStyle}
     >
-      <div className=" relative my-auto flex min-h-[480px] w-[370px] flex-col items-center rounded-xl bg-bgColor p-4 shadow-[0_0_15px_0_rgba(0,0,0,0.1)] sml:w-[320px] xsm:w-[270px]">
+      <div className=" relative my-auto flex min-h-[480px] w-[450px] flex-col items-center rounded-xl bg-bgColor p-4 shadow-[0_0_15px_0_rgba(0,0,0,0.1)] sml:w-[320px] xsm:w-[270px]">
         <h1 className="text-textColor my-4 text-3xl font-semibold xsm:text-3xl">
           {formType}
         </h1>
@@ -30,9 +30,9 @@ const Authentication = () => {
           />
         </div>
         {formType == "Login" ? (
-          <LoginForm className={"mx-auto w-11/12"} setFormType={setFormType} />
+          <LoginForm className={"mx-auto w-11/12 h-[420px]"} setFormType={setFormType} />
         ) : (
-          <SignupForm className={"mx-auto w-11/12"} setFormType={setFormType} />
+          <SignupForm className={"mx-auto w-11/12 h-[420px]"} setFormType={setFormType} />
         )}
       </div>
     </div>

@@ -18,12 +18,16 @@ const vendorSchema = new Schema({
     required: true,
     unique: true,
   },
-  phoneNumber: {
+  phone: {
     type: String,
     required: true,
     minlength: 10,
     maxlength: 10,
     unique: true,
+  },
+  password: {
+    type: String,
+    required: true,
   },
   customers: [
     {

@@ -1,11 +1,10 @@
-const BASEURL = "http://localhost:5000"
-import axios from "axios"
-const vendorId = "65865b1175a727705c869120" // this is fetched from queryClient cache
+const vendorId = "675d951763feccbdb3c081b0" // this is fetched from queryClient cache
+import api from "./api"
 
-const getProductsAndUdharo = async (customerId) => {
+const getProductsAndUdharo = async (vendorId, customerId) => {
   try {
-    const { data } = await axios.get(
-      `${BASEURL}/api/${vendorId}/customers/${customerId}/products`
+    const { data } = await api.get(
+      `/api/${vendorId}/customers/${customerId}/products`
     )
     return data
   } catch (err) {
@@ -13,10 +12,10 @@ const getProductsAndUdharo = async (customerId) => {
   }
 }
 const addProduct = async (detail) => {
-  const { customerId, ...productDetail } = detail
+  const { vendorId, customerId, ...productDetail } = detail
   try {
-    const { data } = await axios.post(
-      `${BASEURL}/api/${vendorId}/customers/${customerId}/products/add`,
+    const { data } = await api.post(
+      `/api/${vendorId}/customers/${customerId}/products/add`,
       productDetail
     )
     return data
@@ -25,12 +24,10 @@ const addProduct = async (detail) => {
   }
 }
 const deleteProduct = async (detail) => {
-  const { customerId, productId, amount } = detail
+  const { vendorId, customerId, productId } = detail
   try {
-    const { data } = await axios.delete(
-      `${BASEURL}/api/${vendorId}/customers/${customerId}/products/${productId}/delete`,
-      { productId, amount }
-    )
+    const { data } = await api.delete(
+      `/api/${vendorId}/customers/${customerId}/products/${productId}/delete`)
     return data
   } catch (err) {
     throw err

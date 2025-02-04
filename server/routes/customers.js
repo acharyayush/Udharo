@@ -6,7 +6,7 @@ import {
   deleteCustomer,
   payUdharo,
 } from "../controllers/customers.js";
-const router = express.Router();
+const router = express.Router({mergeParams: true});
 
 router.route("/").get(getHomePageDetails);
 router.route("/:customerId/transactionHistory").get(getTransactionHistory);

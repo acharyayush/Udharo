@@ -1,9 +1,8 @@
-const BASEURL = "http://localhost:5000"
-import axios from "axios"
-const vendorId = "65865b1175a727705c869120" // this is fetched from queryClient cache
-export const getHomePageData = async () => {
+import api from "./api"
+
+export const getHomePageData = async (vendorId) => {
   try {
-    const { data } = await axios.get(`${BASEURL}/api/${vendorId}/customers`)
+    const { data } = await api.get(`/api/${vendorId}/customers`)
     //if there is no vendor with that id in database then inform user
     if (data.status === "error") return toast(data.status, data.message)
     return data
@@ -11,20 +10,20 @@ export const getHomePageData = async () => {
     throw err
   }
 }
-export const getTransactionHistory = async (customerId) => {
+export const getTransactionHistory = async (vendorId, customerId) => {
   try {
-    const { data } = await axios.get(
-      `${BASEURL}/api/${vendorId}/customers/${customerId}/transactionHistory`
+    const { data } = await api.get(
+      `/api/${vendorId}/customers/${customerId}/transactionHistory`
     )
     return data
   } catch (err) {
     throw err
   }
 }
-export const createCustomer = async (customerDetail) => {
+export const createCustomer = async ({vendorId, ...customerDetail}) => {
   try {
-    const { data } = await axios.post(
-      ` ${BASEURL}/api/${vendorId}/customers/add`,
+    const { data } = await api.post(
+      `/api/${vendorId}/customers/add`,
       customerDetail
     )
     return data
@@ -32,10 +31,10 @@ export const createCustomer = async (customerDetail) => {
     throw err
   }
 }
-export const deleteCustomer = async (customerId) => {
+export const deleteCustomer = async ({vendorId, customerId}) => {
   try {
-    const { data } = await axios.delete(
-      `${BASEURL}/api/${vendorId}/customers/${customerId}/delete`
+    const { data } = await api.delete(
+      `/api/${vendorId}/customers/${customerId}/delete`
     )
     return data
   } catch (err) {
@@ -43,10 +42,10 @@ export const deleteCustomer = async (customerId) => {
   }
 }
 export const payUdharo = async (detail) => {
-  const { customerId, amount } = detail
+  const { vendorId, customerId, amount } = detail
   try {
-    const { data } = await axios.post(
-      `${BASEURL}/api/${vendorId}/customers/${customerId}/repay`,
+    const { data } = await api.post(
+      `/api/${vendorId}/customers/${customerId}/repay`,
       { amount }
     )
     return data

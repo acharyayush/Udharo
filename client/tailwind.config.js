@@ -6,7 +6,7 @@ export default {
       colors: {
         bgColor: "#F5FCFF",
         fadedGreen: "#CAEEC2",
-        brightGreen: "#3eeaa0",
+        brightGreen: "#20d563",
       },
     },
     screens: {

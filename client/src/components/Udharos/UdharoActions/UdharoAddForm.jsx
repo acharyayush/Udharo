@@ -1,14 +1,17 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import FormFieldRow from "../../Shared/FormFieldRow"
 import Button from "../../Shared/Button"
 import { useParams } from "react-router-dom"
 import { useProductAdd } from "../../../customHooks/mutate"
 import { useQueryClient } from "@tanstack/react-query"
+import { useSelector } from "react-redux"
 import toast from "../../../utils/toast"
 const UdharoAddForm = ({ className }) => {
   const { customerId } = useParams()
   const queryClient = useQueryClient()
+  const { id: vendorId } = useSelector((state) => state.vendor)
   const initialProductDetail = {
+    vendorId: "",
     name: "",
     quantity: "",
     unitPrice: "",
@@ -41,6 +44,9 @@ const UdharoAddForm = ({ className }) => {
       },
     })
   }
+  useEffect(() => {
+    setProductDetail((prevDetail) => ({ ...prevDetail, vendorId }))
+  }, [vendorId])
   return (
     <form onSubmit={(e) => e.preventDefault()} className={className}>
       <h1 className="text-left text-3xl font-bold uppercase text-brightGreen sm:text-2xl">

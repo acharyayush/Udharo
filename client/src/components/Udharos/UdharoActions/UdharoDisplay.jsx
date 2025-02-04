@@ -4,9 +4,11 @@ import UdharoTable from "./UdharoTable"
 import TransactionList from "./TransactionList"
 import UdharoSummary from "./UdharoSummary"
 import { useProductsAndUdharoQuery } from "../../../customHooks/query"
+import { useSelector } from "react-redux"
 const UdharoDisplay = () => {
   const { customerId } = useParams()
-  const { data, isError } = useProductsAndUdharoQuery(customerId)
+  const {id:vendorId} = useSelector(state=>state.vendor)
+  const { data, isError } = useProductsAndUdharoQuery(vendorId, customerId)
   if (isError) return
   return (
     <div className="mx-auto w-[90%]">

@@ -1,24 +1,24 @@
 import { useQuery } from "@tanstack/react-query"
 import { getHomePageData, getTransactionHistory } from "../apis/customers"
 import { getProductsAndUdharo } from "../apis/products"
-const useHomeQuery = () => {
+const useHomeQuery = (vendorId) => {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["homepage"],
-    queryFn: () => getHomePageData(),
+    queryFn: ()=>getHomePageData(vendorId),
   })
   return { data, isLoading, isError }
 }
-const useTransactionHistory = (customerId) => {
+const useTransactionHistory = (vendorId, customerId) => {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["transactionHistory", customerId],
-    queryFn: () => getTransactionHistory(customerId),
+    queryFn: () => getTransactionHistory(vendorId, customerId),
   })
   return { data, isLoading, isError }
 }
-const useProductsAndUdharoQuery = (customerId) => {
+const useProductsAndUdharoQuery = (vendorId, customerId) => {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["products", customerId],
-    queryFn: () => getProductsAndUdharo(customerId),
+    queryFn: () => getProductsAndUdharo(vendorId, customerId),
   })
   return { data, isLoading, isError }
 }

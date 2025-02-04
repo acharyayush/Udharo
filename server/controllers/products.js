@@ -5,6 +5,7 @@ const getProductsAndUdharo = async (req, res, next) => {
       { _id: req.customerId, associatedVendor: req.id },
       "-lastModified -transactionHistory -associatedVendor"
     );
+    if(!productsAndUdharo) return;
     const grandTotal = productsAndUdharo.products?.reduce(
       (accumulator, currentProduct) =>
         accumulator + currentProduct.quantity * currentProduct.unitPrice,
@@ -12,7 +13,6 @@ const getProductsAndUdharo = async (req, res, next) => {
     );
     res.json({ ...productsAndUdharo.toObject(), grandTotal });
   } catch (err) {
-    console.log(err.message);
     next(err);
   }
 };
@@ -34,7 +34,6 @@ const addProduct = async (req, res, next) => {
     );
     res.json({ message: "Product added successfully ✌️", status: "success" });
   } catch (err) {
-    console.log(err.message);
     next(err);
   }
 };
@@ -76,7 +75,6 @@ const deleteProduct = async (req, res, next) => {
     }
     res.json({ message: "Product deleted successfully ✌️", status: "success" });
   } catch (err) {
-    console.log(err.message);
     next(err);
   }
 };
