@@ -23,22 +23,13 @@ app.use(
 //Initialize the  middlwares
 app.use(express.json({ extended: false }));
 app.use(cookieParser());
-app.use(
-  "/api/:id/customers",
-  authenticateVendor,
-  customerRoutes
-);
+app.use("/api/:id/customers", authenticateVendor, customerRoutes);
 app.use(
   "/api/:id/customers/:customerId/products",
   authenticateVendor,
-  (req, res, next) => {
-    req.id = req.params.id;
-    req.customerId = req.params.customerId;
-    next();
-  },
   productRoutes
 );
-app.use("/api/vendor/", authenticateVendor, vendorRoutes);
+app.use("/api/vendor", authenticateVendor, vendorRoutes);
 app.use("/auth", authRoutes);
 const port = process.env.PORT || 5000;
 

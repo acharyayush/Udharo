@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import FormFieldRow from "../../Shared/FormFieldRow"
 import Button from "../../Shared/Button"
 import { useParams } from "react-router-dom"
@@ -11,7 +11,6 @@ const UdharoAddForm = ({ className }) => {
   const queryClient = useQueryClient()
   const { id: vendorId } = useSelector((state) => state.vendor)
   const initialProductDetail = {
-    vendorId: "",
     name: "",
     quantity: "",
     unitPrice: "",
@@ -31,7 +30,8 @@ const UdharoAddForm = ({ className }) => {
   const handleProductAdd = () => {
     const detail = {
       ...productDetail,
-      customerId: customerId,
+      vendorId,
+      customerId,
     }
     addProduct(detail, {
       onSuccess: (data) => {
@@ -44,9 +44,6 @@ const UdharoAddForm = ({ className }) => {
       },
     })
   }
-  useEffect(() => {
-    setProductDetail((prevDetail) => ({ ...prevDetail, vendorId }))
-  }, [vendorId])
   return (
     <form onSubmit={(e) => e.preventDefault()} className={className}>
       <h1 className="text-left text-3xl font-bold uppercase text-brightGreen sm:text-2xl">

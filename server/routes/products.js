@@ -4,7 +4,7 @@ import {
   deleteProduct,
   getProductsAndUdharo,
 } from "../controllers/products.js";
-const router = express.Router();
+const router = express.Router({mergeParams: true});
 router.route("/").get(getProductsAndUdharo);
 router.route("/add").post(addProduct);
 router.route("/:productId/delete").delete(deleteProduct);

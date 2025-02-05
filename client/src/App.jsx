@@ -10,55 +10,53 @@ import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import "react-loading-skeleton/dist/skeleton.css"
 import { SkeletonTheme } from "react-loading-skeleton"
-import { Provider } from "react-redux"
-import store from "./store/store"
 import { useEffect } from "react"
 import { getVendorProfile } from "./apis/vendors"
 import { setupInterceptor } from "./apis/api"
+import { useDispatch, useSelector } from "react-redux"
+import { addVendorInfo } from "./store/VendorSlice"
 const App = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const { id } = useSelector((state) => state.vendor)
   useEffect(() => {
     setupInterceptor(navigate)
     const fetchData = async () => {
+      if (id) return
       try {
-        const data = await getVendorProfile()
-        console.log(data)
+        const { _id, email, firstName, lastName } = await getVendorProfile()
+        const vendorInfo = { id: _id, email, firstName, lastName }
+        dispatch(addVendorInfo(vendorInfo))
       } catch (err) {
         console.error(err)
       }
     }
     fetchData()
-  }, [])
+  }, [id])
   return (
-    <Provider store={store}>
-      <SkeletonTheme
-        baseColor="#c8c8c8"
-        highlightColor="#a2a2a2"
-        duration={1.2}
-      >
-          <Nav />
-          <Routes>
-            <Route path="/" element={<UdharosMain />} />
-            <Route path="/auth" element={<Authentication />} />
-            <Route path="/:customerId" element={<UdharoDisplay />} />
-            <Route path="/:customerId/edit" element={<UdharoEdit />} />
-            <Route path="/customers/add" element={<CustomerCreate />} />
-          </Routes>
-          <Footer />
-        <ToastContainer
-          position="top-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="colored"
-        />
-      </SkeletonTheme>
-    </Provider>
+    <SkeletonTheme baseColor="#c8c8c8" highlightColor="#a2a2a2" duration={1.2}>
+      <Nav />
+      <Routes>
+        <Route path="/" element={<UdharosMain />} />
+        <Route path="/auth" element={<Authentication />} />
+        <Route path="/:customerId" element={<UdharoDisplay />} />
+        <Route path="/:customerId/edit" element={<UdharoEdit />} />
+        <Route path="/customers/add" element={<CustomerCreate />} />
+      </Routes>
+      <Footer />
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
+    </SkeletonTheme>
   )
 }
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { IoMdCloudUpload } from "react-icons/io"
 import FormFieldRow from "../Shared/FormFieldRow"
@@ -10,7 +10,6 @@ import { useSelector } from "react-redux"
 const CustomerCreate = () => {
   const navigate = useNavigate()
   const [customerDetail, setCustomerDetail] = useState({
-    vendorId: "",
     firstName: "",
     lastName: "",
     phoneNumber: "",
@@ -23,7 +22,7 @@ const CustomerCreate = () => {
     //handling front end customerDetail validation
     // .............
     //validation finishes
-    createCustomer(customerDetail, {
+    createCustomer({...customerDetail, vendorId}, {
       onSuccess: (data) => {
         navigate("/")
         toast(data.status, data.message)
@@ -40,9 +39,6 @@ const CustomerCreate = () => {
       [e.target.name]: e.target.value,
     })
   }
-  useEffect(() => {
-    setCustomerDetail((prevDetail) => ({ ...prevDetail, vendorId }))
-  }, [vendorId])
   return (
     <form onSubmit={() => e.preventDefault()}>
       <div className="mx-auto my-12 grid max-w-[700px] grid-cols-2 gap-10 px-4">

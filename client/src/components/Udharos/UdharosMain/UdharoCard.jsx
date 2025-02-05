@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { BiUserCircle, BiEdit } from "react-icons/bi"
 import { BsFillTrashFill } from "react-icons/bs"
 import { GoAlertFill } from "react-icons/go"
