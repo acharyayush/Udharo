@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom"
 import Profile from "../Nav/Profile"
+import { useSelector } from "react-redux"
 const Nav = () => {
+  const { isLoggedIn } = useSelector((state) => state.vendor)
   return (
     <section className={`mt-auto h-16 bg-brightGreen`}>
       <nav className="m-auto flex h-full w-11/12 items-center justify-between p-3">
@@ -11,9 +13,11 @@ const Nav = () => {
             </h3>
           </Link>
         </div>
-        <div className="rightSideMenu">
-          <Profile className={"mr-4"} />
-        </div>
+        {isLoggedIn && (
+          <div className="rightSideMenu">
+            <Profile className={"mr-4"} />
+          </div>
+        )}
       </nav>
     </section>
   )

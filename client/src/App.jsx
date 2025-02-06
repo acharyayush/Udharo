@@ -14,7 +14,7 @@ import { useEffect } from "react"
 import { getVendorProfile } from "./apis/vendors"
 import { setupInterceptor } from "./apis/api"
 import { useDispatch, useSelector } from "react-redux"
-import { addVendorInfo } from "./store/VendorSlice"
+import { addVendorInfo, setLoggedIn } from "./store/VendorSlice"
 const App = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -25,6 +25,7 @@ const App = () => {
       if (id) return
       try {
         const { _id, email, firstName, lastName } = await getVendorProfile()
+        dispatch(setLoggedIn(true))
         const vendorInfo = { id: _id, email, firstName, lastName }
         dispatch(addVendorInfo(vendorInfo))
       } catch (err) {

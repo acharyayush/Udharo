@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit"
 const initialState = {
   id: "",
-  firstName: "Not",
-  lastName: "Known",
+  firstName: "",
+  lastName: "",
   email: "",
   avatar: "",
+  isLoggedIn: false,
 }
 const VendorSlice = createSlice({
   name: "vendor",
@@ -16,7 +17,10 @@ const VendorSlice = createSlice({
     addAvatar: (state, { payload }) => {
       state.avatar = payload
     },
+    setLoggedIn: (state, {payload}) => {
+      state.isLoggedIn = payload
+    }
   },
 })
-export const { addVendorInfo, addAvatar } = VendorSlice.actions
+export const { addVendorInfo, addAvatar, setLoggedIn } = VendorSlice.actions
 export default VendorSlice.reducer

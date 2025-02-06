@@ -17,3 +17,19 @@ export const handleLogin = async (formData) => {
     throw err
   }
 }
+export const handleLogout = async()=>{
+  try{
+    await api.delete(`/auth/logout`)
+  }
+  catch(err){
+    throw err
+  }
+}
+export const refreshTheToken = async()=>{
+  try{
+    await api.post('/auth/refresh')
+  }
+  catch(err){
+    throw err
+  }
+}

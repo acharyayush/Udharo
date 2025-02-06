@@ -29,6 +29,9 @@ const vendorSchema = new Schema({
     type: String,
     required: true,
   },
+  refreshToken: {
+    type: String,
+  },
   customers: [
     {
       type: Schema.Types.ObjectId,

@@ -4,7 +4,7 @@ import EyeIcon from "../Shared/EyeIcon"
 import FormFieldRow from "../Shared/FormFieldRow"
 import { handleSignup } from "../../apis/auth"
 import showToast from "../../utils/toast"
-import { addVendorInfo } from "../../store/VendorSlice"
+import { addVendorInfo, setLoggedIn } from "../../store/VendorSlice"
 import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 const SignupForm = ({ className }) => {
@@ -22,6 +22,7 @@ const SignupForm = ({ className }) => {
     try {
       const data = await handleSignup(userDetails)
       dispatch(addVendorInfo(data))
+      dispatch(setLoggedIn(true))
       navigate("/")
     } catch (err) {
       console.log(err)
