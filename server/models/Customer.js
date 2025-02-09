@@ -11,7 +11,7 @@ const customerSchema = new Schema({
     type: String,
     required: true,
   },
-  avatar: {
+  image: {
     type: String,
   },
   phoneNumber: {

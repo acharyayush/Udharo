@@ -4,12 +4,10 @@ import Button from "../../Shared/Button"
 import { useParams } from "react-router-dom"
 import { useProductAdd } from "../../../customHooks/mutate"
 import { useQueryClient } from "@tanstack/react-query"
-import { useSelector } from "react-redux"
 import toast from "../../../utils/toast"
 const UdharoAddForm = ({ className }) => {
   const { customerId } = useParams()
   const queryClient = useQueryClient()
-  const { id: vendorId } = useSelector((state) => state.vendor)
   const initialProductDetail = {
     name: "",
     quantity: "",
@@ -30,7 +28,6 @@ const UdharoAddForm = ({ className }) => {
   const handleProductAdd = () => {
     const detail = {
       ...productDetail,
-      vendorId,
       customerId,
     }
     addProduct(detail, {

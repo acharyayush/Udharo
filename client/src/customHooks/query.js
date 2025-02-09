@@ -4,7 +4,7 @@ import { getProductsAndUdharo } from "../apis/products"
 const useHomeQuery = (vendorId) => {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["homepage"],
-    queryFn: () => getHomePageData(vendorId),
+    queryFn: () => getHomePageData(),
     enabled: !!vendorId,
   })
   return { data, isLoading, isError }
@@ -12,7 +12,7 @@ const useHomeQuery = (vendorId) => {
 const useTransactionHistory = (vendorId, customerId) => {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["transactionHistory", customerId],
-    queryFn: () => getTransactionHistory(vendorId, customerId),
+    queryFn: () => getTransactionHistory(customerId),
     enabled: !!vendorId && !!customerId,
   })
   return { data, isLoading, isError }
@@ -20,7 +20,7 @@ const useTransactionHistory = (vendorId, customerId) => {
 const useProductsAndUdharoQuery = (vendorId, customerId) => {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["products", customerId],
-    queryFn: () => getProductsAndUdharo(vendorId, customerId),
+    queryFn: () => getProductsAndUdharo(customerId),
     enabled: !!vendorId && !!customerId,
   })
   return { data, isLoading, isError }

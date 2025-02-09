@@ -24,9 +24,9 @@ const App = () => {
     const fetchData = async () => {
       if (id) return
       try {
-        const { _id, email, firstName, lastName } = await getVendorProfile()
+        const { _id, email, firstName, lastName, avatar } = await getVendorProfile()
         dispatch(setLoggedIn(true))
-        const vendorInfo = { id: _id, email, firstName, lastName }
+        const vendorInfo = { id: _id, email, firstName, lastName, avatar }
         dispatch(addVendorInfo(vendorInfo))
       } catch (err) {
         console.error(err)

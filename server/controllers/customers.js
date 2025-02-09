@@ -1,33 +1,36 @@
 import Vendor from "../models/Vendor.js";
 import Customer from "../models/Customer.js";
+import fs from "fs"
+import path from "path"
 const getHomePageDetails = async (req, res, next) => {
   try {
     //get vendor with all customers
-    const id = req.params.id;
-    const vendorDetail = await Vendor.findById(
+    const id = req.id;
+    const customerDetail = await Vendor.findById(
       id,
       "firstName lastName customers"
     ).populate({
       path: "customers",
-      select: "firstName lastName lastModified avatar udharoLeft",
+      select: "firstName lastName lastModified image udharoLeft",
     });
-    if (!vendorDetail) {
+    if (!customerDetail) {
       return res
         .status(404)
         .json({ message: "Vendor Not Found 🤷‍♂️", status: "error" });
     }
-    const totalUdharo = vendorDetail.customers?.reduce(
+    const totalUdharo = customerDetail.customers?.reduce(
       (total, { udharoLeft }) => total + udharoLeft,
       0
     );
-    res.json({ ...vendorDetail.toObject(), totalUdharo });
+    res.json({ ...customerDetail.toObject(), totalUdharo });
   } catch (err) {
     next(err);
   }
 };
 const getTransactionHistory = async (req, res, next) => {
   try {
-    const { id:vendorId, customerId } = req.params;
+    const {customerId } = req.params;
+    const vendorId = req.id;
     const { transactionHistory } = await Customer.findOne({
       _id: customerId,
       associatedVendor: vendorId,
@@ -39,8 +42,8 @@ const getTransactionHistory = async (req, res, next) => {
 };
 const addCustomer = async (req, res, next) => {
   try {
-    const vendorId = req.params.id;
-    const customerDetail = { ...req.body, associatedVendor: vendorId };
+    const vendorId = req.id;
+    const customerDetail = { ...req.body, associatedVendor: vendorId, image: req.file?.filename || "" };
     const customer = await Customer.create(customerDetail);
     await Vendor.findByIdAndUpdate(
       vendorId,
@@ -55,17 +58,19 @@ const addCustomer = async (req, res, next) => {
 };
 const deleteCustomer = async (req, res, next) => {
   try {
-    const {id:vendorId, customerId} = req.params;
-    const { firstName, lastName } = await Customer.findByIdAndDelete(
+    const {customerId} = req.params;
+    const vendorId = req.id;
+    const { firstName, lastName, image } = await Customer.findByIdAndDelete(
       customerId
     );
-    const deletedCustomer = await Vendor.findByIdAndUpdate(vendorId, {
+    const vendor = await Vendor.findByIdAndUpdate(vendorId, {
       $pull: { customers: customerId },
     });
-    if (!deletedCustomer) {
-      return res
-        .status(404)
-        .json({ message: "Customer does not exist 🤷‍♂️", status: "error" });
+    try{
+      await fs.promises.unlink(path.join("./uploads", image))
+    }
+    catch(cleanUpErr){
+      res.json({status: "error", message: "Could not clean up customer image"})
     }
     res.json({
       message: `Deleted Customer, ${firstName} ${lastName} 😁`,
@@ -77,7 +82,8 @@ const deleteCustomer = async (req, res, next) => {
 };
 const payUdharo = async (req, res, next) => {
   try {
-    const { id:vendorId, customerId } = req.params;
+    const {customerId } = req.params;
+    const vendorId = req.id;
     const { amount } = req.body;
     const remark = `Repaid NPR ${amount}`;
     const action = "REPAY";
@@ -96,7 +102,7 @@ const payUdharo = async (req, res, next) => {
     customer.udharoLeft = Number(customer.udharoLeft) - Number(amount);
     customer.udharoPaid = Number(customer.udharoPaid) + Number(amount);
     customer.transactionHistory.push(newTransaction);
-    customer.save();
+    await customer.save();
 
     res.json({
       message: `Udharo paid, NPR. ${amount}😁`,
@@ -107,10 +113,39 @@ const payUdharo = async (req, res, next) => {
     next(err);
   }
 };
+const uploadCustomerImage = async (req, res, next) => {
+  try {
+    const {customerId} = req.params
+    if (!req.id || !req.file?.filename) {
+      throw new Error(`No ${!req.id ? "customer id" : "filename"} found`);
+    }
+    const {image: customerImage} = await Customer.findByIdAndUpdate(customerId, { image: req.file.filename }).select("image");
+    try{
+      if(customerImage){
+        await fs.promises.unlink(path.join(req.file.destination, customerImage))
+      }
+    }catch(err){
+      console.log("Error cleaning up previous customer image")
+      next(err)
+    }
+    res
+      .status(200)
+      .json({ message: "customer image uploaded successfully", path: req.file.filename });
+  } catch (err) {
+    try {
+      if (req.file?.path) await fs.promises.unlink(req.file.path);
+    } catch (cleanupErr) {
+      console.log("Could not clean clean up the customer image");
+    } finally {
+      next(err);
+    }
+  }
+};
 export {
   getHomePageDetails,
   getTransactionHistory,
   addCustomer,
   deleteCustomer,
   payUdharo,
+  uploadCustomerImage
 };

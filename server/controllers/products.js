@@ -2,7 +2,7 @@ import Customer from "../models/Customer.js";
 const getProductsAndUdharo = async (req, res, next) => {
   try {
     const productsAndUdharo = await Customer.findOne(
-      { _id: req.params.customerId, associatedVendor: req.params.id },
+      { _id: req.params.customerId, associatedVendor: req.id },
       "-lastModified -transactionHistory -associatedVendor"
     );
     if(!productsAndUdharo) return;
@@ -26,7 +26,7 @@ const addProduct = async (req, res, next) => {
     const date = Date.now();
     const newTransaction = { remark, action, amount, date };
     await Customer.findOneAndUpdate(
-      { _id: req.params.customerId, associatedVendor: req.params.id },
+      { _id: req.params.customerId, associatedVendor: req.id },
       {
         $push: { products: req.body, transactionHistory: newTransaction },
         $inc: { udharoLeft: amount },
@@ -43,7 +43,7 @@ const deleteProduct = async (req, res, next) => {
     const { products } = await Customer.findOne(
       {
         _id: req.params.customerId,
-        associatedVendor: req.params.id,
+        associatedVendor: req.id,
       },
       "products"
     );
@@ -57,7 +57,7 @@ const deleteProduct = async (req, res, next) => {
     const newTransaction = { remark, action, amount, date };
 
     const deletedProduct = await Customer.findOneAndUpdate(
-      { _id: req.params.customerId, associatedVendor: req.params.id },
+      { _id: req.params.customerId, associatedVendor: req.id },
       {
         $pull: {
           products: { _id: productId },

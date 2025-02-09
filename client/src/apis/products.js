@@ -1,10 +1,9 @@
-const vendorId = "675d951763feccbdb3c081b0" // this is fetched from queryClient cache
 import api from "./api"
 
-const getProductsAndUdharo = async (vendorId, customerId) => {
+const getProductsAndUdharo = async (customerId) => {
   try {
     const { data } = await api.get(
-      `/api/${vendorId}/customers/${customerId}/products`
+      `/api/customers/${customerId}/products`
     )
     return data
   } catch (err) {
@@ -12,10 +11,10 @@ const getProductsAndUdharo = async (vendorId, customerId) => {
   }
 }
 const addProduct = async (detail) => {
-  const { vendorId, customerId, ...productDetail } = detail
+  const { customerId, ...productDetail } = detail
   try {
     const { data } = await api.post(
-      `/api/${vendorId}/customers/${customerId}/products/add`,
+      `/api/customers/${customerId}/products/add`,
       productDetail
     )
     return data
@@ -24,10 +23,10 @@ const addProduct = async (detail) => {
   }
 }
 const deleteProduct = async (detail) => {
-  const { vendorId, customerId, productId } = detail
+  const { customerId, productId } = detail
   try {
     const { data } = await api.delete(
-      `/api/${vendorId}/customers/${customerId}/products/${productId}/delete`)
+      `/api/customers/${customerId}/products/${productId}/delete`)
     return data
   } catch (err) {
     throw err

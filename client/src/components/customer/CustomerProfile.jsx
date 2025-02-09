@@ -1,15 +1,81 @@
 import { BiSolidUserCircle } from "react-icons/bi"
 import Skeleton from "react-loading-skeleton"
-const CustomerProfile = ({ name, phoneNumber, imgUrl, udharoLeft }) => {
-  const showImg = () => {
-    return imgUrl ? (
-      <img
-        src={imgUrl}
-        alt=""
-        className="absolute left-1/2 top-1/2 h-44 w-44 -translate-x-1/2 -translate-y-[30px] rounded-full object-cover sm:h-32 sm:w-32"
-      />
-    ) : (
-      <BiSolidUserCircle className=" absolute left-1/2 top-1/2 h-44 w-44 -translate-x-1/2 -translate-y-[30px] rounded-full sm:h-32 sm:w-32" />
+import Avatar, { AvatarOverlay } from "../Shared/Avatar"
+import { ImSpinner2 } from "react-icons/im"
+import { useCustomerImageUpload } from "../../customHooks/mutate"
+import { useRef } from "react"
+import { useQueryClient } from "@tanstack/react-query"
+import { FaEdit } from "react-icons/fa"
+import { IoMdAdd } from "react-icons/io"
+import showToast from "../../utils/toast"
+const CustomerProfile = ({ id, name, phoneNumber, imgName, udharoLeft }) => {
+  const fileInputRef = useRef(null)
+  const { mutate: handleCustomerImageUpload, isPending } =
+    useCustomerImageUpload()
+  const queryClient = useQueryClient()
+  const handleFileInputClick = () => {
+    if (fileInputRef) {
+      fileInputRef.current.click()
+    }
+  }
+  const handleFileChange = async (e) => {
+    if (fileInputRef) {
+      const customerImage = e.target.files[0]
+      if (!customerImage) return
+      handleCustomerImageUpload(
+        { customerId: id, customerImage },
+        {
+          onSuccess: (data) => {
+            queryClient.invalidateQueries("products")
+            showToast("success", "image uploaded successfully")
+          },
+          onError: (err) => {
+            showToast("error", err.message)
+          },
+        }
+      )
+    }
+  }
+  const showCustomerImage = () => {
+    return (
+      <Avatar
+        className={
+          "absolute left-1/2 top-1/2 h-44 w-44 -translate-x-1/2 -translate-y-[30px] cursor-pointer rounded-full object-cover sm:h-32 sm:w-32"
+        }
+        onClick={handleFileInputClick}
+      >
+        {!imgName ? (
+          <>
+            <BiSolidUserCircle className="text-[12rem] sm:text-[9rem]"></BiSolidUserCircle>
+            {!isPending ? (
+              <AvatarOverlay className={"hidden rounded-full group-hover:grid"}>
+                <IoMdAdd className="text-[6rem] text-black sm:text-[3rem]" />
+              </AvatarOverlay>
+            ) : (
+              <AvatarOverlay className={"rounded-full"}>
+                <ImSpinner2 className="animate-spin text-[6em] text-black sm:text-[3rem]" />
+              </AvatarOverlay>
+            )}
+          </>
+        ) : (
+          <>
+            <img
+              src={`http://localhost:5000/uploads/${imgName}`}
+              className=" absolute h-full w-full rounded-full object-cover"
+              alt="Avatar"
+            />
+            {!isPending ? (
+              <AvatarOverlay className={"hidden rounded-full group-hover:grid"}>
+                <FaEdit className="text-[6rem] sm:text-[3rem]" />
+              </AvatarOverlay>
+            ) : (
+              <AvatarOverlay className={"rounded-full"}>
+                <ImSpinner2 className="animate-spin text-[6rem] text-black sm:text-[3rem]" />
+              </AvatarOverlay>
+            )}
+          </>
+        )}
+      </Avatar>
     )
   }
   return (
@@ -21,7 +87,7 @@ const CustomerProfile = ({ name, phoneNumber, imgUrl, udharoLeft }) => {
           }`}
         >
           {name ? (
-            showImg()
+            showCustomerImage()
           ) : (
             <Skeleton
               circle
@@ -29,7 +95,7 @@ const CustomerProfile = ({ name, phoneNumber, imgUrl, udharoLeft }) => {
             />
           )}
         </div>
-        <div className="customerProfileDetail mx-auto mb-6 mt-24 w-4/5 text-center sm:mt-14">
+        <div className="customerProfileDetail mx-auto mb-6 mt-28 w-4/5 text-center sm:mt-14">
           <h3 className="mb-1 text-2xl font-bold">
             {name || <Skeleton className="w-2/3 sm:w-[90%]" />}
           </h3>
@@ -50,6 +116,15 @@ const CustomerProfile = ({ name, phoneNumber, imgUrl, udharoLeft }) => {
             )}
           </h1>
         </div>
+        {/* input for customer image which is always hidden */}
+        <input
+          type="file"
+          className="hidden"
+          name="customerImage"
+          accept="image/*"
+          ref={fileInputRef}
+          onChange={handleFileChange}
+        />
       </section>
     </div>
   )

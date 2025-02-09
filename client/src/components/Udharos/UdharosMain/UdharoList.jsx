@@ -13,13 +13,13 @@ const UdharoList = ({ customers, screenSize, isSearching }) => {
         customers to your udharo list!
       </h1>
     )
-  if (isSearching)
+  if (customers.length===0 && isSearching)
     return <h1 className="mt-2 text-lg">No customers match your search!</h1>
   return customers.map(
-    ({ _id, avatar, firstName, lastName, lastModified, udharoLeft }) => (
+    ({ _id, firstName, lastName, image, lastModified, udharoLeft }) => (
       <UdharoCard
         customerId={_id}
-        avatar={avatar}
+        customerImage={image}
         customerName={`${firstName} ${lastName}`}
         lastModified={lastModified}
         udharoLeft={udharoLeft}

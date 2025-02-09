@@ -5,11 +5,9 @@ import Button from "../../Shared/Button"
 import FormFieldRow from "../../Shared/FormFieldRow"
 import { useUdharoPay } from "../../../customHooks/mutate"
 import toast from "../../../utils/toast"
-import { useSelector } from "react-redux"
 const UdharoPay = () => {
   const queryClient = useQueryClient()
   const { customerId } = useParams()
-  const {id:vendorId} = useSelector(state=>state.vendor)
   const [amount, setAmount] = useState("")
   const { mutate: payUdharo, isPending } = useUdharoPay()
   const handleAmountChange = (e) => {
@@ -22,7 +20,7 @@ const UdharoPay = () => {
     if (amount <= 0)
       return toast("error", "Repay amount must be greater than 0")
     payUdharo(
-      { vendorId, customerId, amount },
+      { customerId, amount },
       {
         onSuccess: (data) => {
           queryClient.invalidateQueries(["products", customerId])

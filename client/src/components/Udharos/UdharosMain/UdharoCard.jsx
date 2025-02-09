@@ -7,11 +7,10 @@ import { Link } from "react-router-dom"
 import Modal from "../../Shared/Modal"
 import { useCustomerDelete } from "../../../customHooks/mutate"
 import { useQueryClient } from "@tanstack/react-query"
-import { useSelector } from "react-redux"
 import toast from "../../../utils/toast"
 const UdharoCard = ({
   customerId,
-  avatar,
+  customerImage,
   customerName,
   lastModified,
   udharoLeft,
@@ -29,18 +28,17 @@ const UdharoCard = ({
     maximumFractionDigits: 2,
     minimumFractionDigits: 2,
   })
-  const {id:vendorId} = useSelector((state) => state.vendor)
   const renderCustomerImage = () => {
-    if (avatar) {
+    if (customerImage) {
       return (
         <img
-          src={avatar}
+          src={`http://localhost:5000/uploads/${customerImage}`}
           alt="customer img"
-          className="h-44 w-44 rounded-l-xl object-cover"
+          className="h-24 w-24 rounded-full object-cover"
         />
       )
     }
-    return <BiUserCircle className="text-7xl text-brightGreen sm:mb-2" />
+    return <BiUserCircle className="text-8xl text-brightGreen sm:mb-2" />
   }
 
   return (
@@ -82,7 +80,7 @@ const UdharoCard = ({
         closeModal={() => setOpenModal(false)}
         onSubmit={() =>
           deleteCustomer(
-            {vendorId, customerId },
+            { customerId },
             {
               onSuccess: (data) => {
                 queryClient.invalidateQueries(["homepage"])

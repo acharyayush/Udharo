@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { IoMdCloudUpload } from "react-icons/io"
 import FormFieldRow from "../Shared/FormFieldRow"
@@ -6,33 +6,36 @@ import PhotoInput from "../Shared/PhotoInput"
 import Button from "../Shared/Button"
 import { useCustomerCreate } from "../../customHooks/mutate"
 import toast from "../../utils/toast"
-import { useSelector } from "react-redux"
 const CustomerCreate = () => {
   const navigate = useNavigate()
   const [customerDetail, setCustomerDetail] = useState({
     firstName: "",
     lastName: "",
     phoneNumber: "",
-    avatar: "",
+    customerImage: "",
   })
-  const { id: vendorId } = useSelector((state) => state.vendor)
+  const [inputImage, setInputImage] = useState(null)
   const { mutate: createCustomer, isPending } = useCustomerCreate()
-
   const handleFormSubmit = () => {
     //handling front end customerDetail validation
     // .............
     //validation finishes
-    createCustomer({...customerDetail, vendorId}, {
+    const detail = {...customerDetail, customerImage: inputImage}
+    createCustomer(detail, {
       onSuccess: (data) => {
         navigate("/")
         toast(data.status, data.message)
       },
+      onError: (err)=>{
+        console.log(err.message)
+        toast("error", "Error creating customer")
+      }
     })
   }
   const handleCustomerDetailChange = (e) => {
-    if (e.target.name === "phoneNumber") {
-      //only take digits
-      e.target.value = e.target.value.replace(/\D/g, "")
+    const phoneRegex = /^\d{0,10}$/
+    if (e.target.name === "phoneNumber" && !phoneRegex.test(e.target.value)){
+      return;
     }
     setCustomerDetail({
       ...customerDetail,
@@ -60,17 +63,16 @@ const CustomerCreate = () => {
           name={"phoneNumber"}
           label={"Phone Number"}
           className={" col-span-2"}
-          inputValue={customerDetail.phone}
+          inputValue={customerDetail.phoneNumber}
           onChange={handleCustomerDetailChange}
         />{" "}
         <PhotoInput
-          name={"avatar"}
+          name={"customerImage"}
           label={"Customer Image"}
           isOptional
           className="col-span-2"
-          inputValue={customerDetail.avatar}
           //this need to be managed later
-          onChange={handleCustomerDetailChange}
+          setInputImage={setInputImage}
         />
         <Button
           className={

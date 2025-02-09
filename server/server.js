@@ -1,3 +1,5 @@
+import fs from "fs";
+import path from "path";
 import express from "express";
 import { connectDB } from "./config/db.js";
 import cors from "cors";
@@ -9,26 +11,35 @@ import errorHandler from "./middlewares/errorHandler.js";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import authenticateVendor from "./middlewares/authenticateVendor.js";
+import { fileURLToPath } from "url";
 dotenv.config();
 const app = express();
 //Connect to the database
 connectDB();
 //CORS-enabled for all origins
+
+//make uploads directory if it doesn't exist
+if (!fs.existsSync("./uploads")) {
+  fs.mkdirSync("./uploads");
+}
+
 app.use(
   cors({
     origin: process.env.CLIENT_BASE_URL || "http://localhost:3000",
     credentials: true,
   })
 );
+const dirname = path.dirname(fileURLToPath(import.meta.url));
 //Initialize the  middlwares
 app.use(express.json({ extended: false }));
 app.use(cookieParser());
-app.use("/api/:id/customers", authenticateVendor, customerRoutes);
+app.use("/uploads", express.static(path.join(dirname, "uploads")));
 app.use(
-  "/api/:id/customers/:customerId/products",
+  "/api/customers/:customerId/products",
   authenticateVendor,
   productRoutes
 );
+app.use("/api/customers", authenticateVendor, customerRoutes);
 app.use("/api/vendor", authenticateVendor, vendorRoutes);
 app.use("/auth", authRoutes);
 const port = process.env.PORT || 5000;

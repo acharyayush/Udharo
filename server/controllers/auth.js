@@ -19,7 +19,7 @@ export const signup = async (req, res, next) => {
       const newAccessToken = generateJWT({ id, email }, ACCESS_TOKEN);
       const newRefreshToken = generateJWT({ id, email }, REFRESH_TOKEN);
       newVendor.refreshToken = await bcrypt.hash(newRefreshToken, 10);
-      newVendor.save();
+      await newVendor.save();
       setTokensInCookies(res, newAccessToken, newRefreshToken);
       res.status(200).json({ id, firstName, lastName, email });
     }

@@ -1,16 +1,18 @@
 import { useState, useEffect } from "react"
-import { BiSolidUserCircle, BiSolidCaretDownCircle } from "react-icons/bi"
+import { BiSolidUserCircle } from "react-icons/bi"
+import { MdArrowDropDownCircle } from "react-icons/md"
 import DropDown from "./DropDown"
 import { twMerge } from "tailwind-merge"
 import { handleLogout } from "../../apis/auth"
 import { useNavigate } from "react-router-dom"
 import showToast from "../../utils/toast"
 import { setLoggedIn } from "../../store/VendorSlice"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 const Profile = ({ className }) => {
   const [isOpen, setIsOpen] = useState(false)
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const { avatar } = useSelector((state) => state.vendor)
   useEffect(() => {
     document.body.addEventListener("click", () => setIsOpen(false))
     return () => {
@@ -46,10 +48,29 @@ const Profile = ({ className }) => {
       )}
     >
       <div className="myProfile" onClick={toggleDropDown}>
-        <BiSolidUserCircle className=" text-[2.5rem] text-[#003a1f]" />
-        <BiSolidCaretDownCircle className="bg-textColor absolute bottom-1 right-1 rounded-full text-base text-white" />
+        {!avatar ? (
+          <>
+            <BiSolidUserCircle className=" text-[2.9rem] text-[#003a1f]"></BiSolidUserCircle>
+            <MdArrowDropDownCircle className="absolute bottom-1 right-1 rounded-full bg-black text-base text-white" />
+          </>
+        ) : (
+          <>
+            <img
+              src={`http://localhost:5000/uploads/${avatar}`}
+              className="h-10 w-10 rounded-full"
+              alt="Avatar"
+            />
+            <MdArrowDropDownCircle className="absolute bottom-0 right-0 rounded-full bg-black text-base text-white" />
+          </>
+        )}
       </div>
-      {isOpen && <DropDown onClose={closeDropDown} onLogout={onLogout} onClick={stayAsItIs} />}
+      {isOpen && (
+        <DropDown
+          onClose={closeDropDown}
+          onLogout={onLogout}
+          onClick={stayAsItIs}
+        />
+      )}
     </div>
   )
 }

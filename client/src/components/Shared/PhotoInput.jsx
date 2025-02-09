@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { BiPhotoAlbum } from "react-icons/bi"
 import Button from "./Button"
-const PhotoInput = ({ label, isOptional, className }) => {
+const PhotoInput = ({ label, isOptional, className, setInputImage }) => {
   const [selectedFile, setSelectedFile] = useState(null)
   const [showDropText, setShowDropText] = useState(false)
   const fileInput = useRef(null)
@@ -11,6 +11,7 @@ const PhotoInput = ({ label, isOptional, className }) => {
   const handleFileSelection = (e) => {
     e.preventDefault()
     setSelectedFile(e.target.files?.[0] || e.dataTransfer?.files?.[0])
+    setInputImage(e.target.files?.[0] || e.dataTransfer?.files?.[0])
     setShowDropText(false)
     e.stopPropagation()
   }
@@ -48,6 +49,7 @@ const PhotoInput = ({ label, isOptional, className }) => {
             <input
               type="file"
               ref={fileInput}
+              accept="image/*"
               hidden
               onChange={handleFileSelection}
             />
