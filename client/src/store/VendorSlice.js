@@ -19,8 +19,11 @@ const VendorSlice = createSlice({
     },
     setLoggedIn: (state, {payload}) => {
       state.isLoggedIn = payload
+    },
+    resetVendorInfo: (state)=>{
+      Object.assign(state, initialState)
     }
   },
 })
-export const { addVendorInfo, addAvatar, setLoggedIn } = VendorSlice.actions
+export const { addVendorInfo, addAvatar, setLoggedIn, resetVendorInfo } = VendorSlice.actions
 export default VendorSlice.reducer

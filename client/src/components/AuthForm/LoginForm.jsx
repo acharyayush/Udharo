@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"
 import EyeIcon from "../Shared/EyeIcon"
 import FormFieldRow from "../Shared/FormFieldRow"
 import { handleLogin } from "../../apis/auth"
-import { addVendorInfo, setLoggedIn } from "../../store/VendorSlice"
+import { addVendorInfo, resetVendorInfo, setLoggedIn } from "../../store/VendorSlice"
 import { useDispatch } from "react-redux"
 import showToast from "../../utils/toast"
 const LoginForm = ({ className, setFormType }) => {
@@ -27,6 +27,7 @@ const LoginForm = ({ className, setFormType }) => {
   const onLogin = async () => {
     try {
       const data = await handleLogin(userDetails)
+      dispatch(resetVendorInfo())
       dispatch(addVendorInfo(data))
       dispatch(setLoggedIn(true))
     } catch (err) {

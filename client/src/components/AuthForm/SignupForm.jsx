@@ -4,7 +4,7 @@ import EyeIcon from "../Shared/EyeIcon"
 import FormFieldRow from "../Shared/FormFieldRow"
 import { handleSignup } from "../../apis/auth"
 import showToast from "../../utils/toast"
-import { addVendorInfo, setLoggedIn } from "../../store/VendorSlice"
+import { addVendorInfo, resetVendorInfo, setLoggedIn } from "../../store/VendorSlice"
 import { useDispatch } from "react-redux"
 const SignupForm = ({ className }) => {
   const dispatch = useDispatch()
@@ -19,6 +19,7 @@ const SignupForm = ({ className }) => {
   const onSignUp = async () => {
     try {
       const data = await handleSignup(userDetails)
+      dispatch(resetVendorInfo())
       dispatch(addVendorInfo(data))
       dispatch(setLoggedIn(true))
     } catch (err) {
