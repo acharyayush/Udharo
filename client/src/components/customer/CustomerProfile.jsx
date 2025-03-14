@@ -25,7 +25,7 @@ const CustomerProfile = ({ id, name, phoneNumber, imgName, udharoLeft }) => {
       handleCustomerImageUpload(
         { customerId: id, customerImage },
         {
-          onSuccess: (data) => {
+          onSuccess: () => {
             queryClient.invalidateQueries("products")
             showToast("success", "image uploaded successfully")
           },

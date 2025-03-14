@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { IoMdCloudUpload } from "react-icons/io"
 import FormFieldRow from "../Shared/FormFieldRow"
@@ -43,7 +43,7 @@ const CustomerCreate = () => {
     })
   }
   return (
-    <form onSubmit={() => e.preventDefault()}>
+    <form onSubmit={(e) => e.preventDefault()}>
       <div className="mx-auto my-12 grid max-w-[700px] grid-cols-2 gap-10 px-4">
         <FormFieldRow
           name={"firstName"}

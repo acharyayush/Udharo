@@ -4,7 +4,6 @@ import App from "./App.jsx"
 import "./index.css"
 import toast from "./utils/toast.js"
 import {
-  MutationCache,
   QueryCache,
   QueryClient,
   QueryClientProvider,
