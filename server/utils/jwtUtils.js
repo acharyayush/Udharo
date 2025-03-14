@@ -18,12 +18,14 @@ export const setTokensInCookies = (res, accessToken, refreshToken) => {
           httpOnly: true,
           maxAge: 2 * 60 * 60 * 1000, //2 hr for cookie to expire but 5m for token to expire (as we have access to refresh token map)
           secure: process.env.NODE_ENV === "production",
+          sameSite: "None",
         });
       if(refreshToken)
         res.cookie("refresh_token", refreshToken, {
         httpOnly: true,
         maxAge: 2 * 60 * 60 * 1000, //2 hrs
         secure: process.env.NODE_ENV === "production",
+        sameSite: "None",
         path: "/auth/refresh"
       });
     } catch (err) {
