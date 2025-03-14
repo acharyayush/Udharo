@@ -3,7 +3,7 @@ import store from "../store/store"
 import { setLoggedIn } from "../store/VendorSlice"
 
 const api = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: import.meta.env.VITE_SERVER_BASEURL,
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
@@ -27,7 +27,7 @@ export const setupInterceptor = (navigate) => {
         //try to refresh the token
         try {
           await axios.post(
-            "http://localhost:5000/auth/refresh",
+            `${import.meta.env.VITE_SERVER_BASEURL}/auth/refresh`,
             {},
             { withCredentials: true }
           )

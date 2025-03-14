@@ -60,7 +60,7 @@ const CustomerProfile = ({ id, name, phoneNumber, imgName, udharoLeft }) => {
         ) : (
           <>
             <img
-              src={`http://localhost:5000/uploads/${imgName}`}
+              src={`${import.meta.env.VITE_SERVER_BASEURL}/uploads/${imgName}`}
               className=" absolute h-full w-full rounded-full object-cover"
               alt="Avatar"
             />

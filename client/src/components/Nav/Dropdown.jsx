@@ -59,7 +59,7 @@ const DropDown = ({ onClose, onClick, onLogout }) => {
           ) : (
             <>
               <img
-                src={`http://localhost:5000/uploads/${avatar}`}
+                src={`${import.meta.env.VITE_SERVER_BASEURL}/uploads/${avatar}`}
                 className="h-9 w-9 rounded-full"
                 alt="Avatar"
               />

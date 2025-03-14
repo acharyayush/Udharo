@@ -56,7 +56,7 @@ const Profile = ({ className }) => {
         ) : (
           <>
             <img
-              src={`http://localhost:5000/uploads/${avatar}`}
+              src={`${import.meta.env.VITE_SERVER_BASEURL}/uploads/${avatar}`}
               className="h-10 w-10 rounded-full"
               alt="Avatar"
             />
