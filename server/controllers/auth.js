@@ -62,6 +62,7 @@ export const login = async (req, res, next) => {
       email: vendor.email,
       firstName: vendor.firstName,
       lastName: vendor.lastName,
+      avatar: vendor.avatar
     });
   } catch (err) {
     next(err);

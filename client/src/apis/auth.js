@@ -11,8 +11,8 @@ export const handleSignup = async (formData) => {
 export const handleLogin = async (formData) => {
   try {
     const { data } = await api.post(`/auth/login`, formData)
-    const { id, firstName, lastName, email } = data
-    return { id, firstName, lastName, email }
+    const { id, firstName, lastName, email, avatar } = data
+    return { id, firstName, lastName, email, avatar }
   } catch (err) {
     throw err
   }
