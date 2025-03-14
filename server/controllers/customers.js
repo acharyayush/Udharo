@@ -1,7 +1,7 @@
 import Vendor from "../models/Vendor.js";
 import Customer from "../models/Customer.js";
-import fs from "fs"
-import path from "path"
+import fs from "fs";
+import path from "path";
 const getHomePageDetails = async (req, res, next) => {
   try {
     //get vendor with all customers
@@ -29,7 +29,7 @@ const getHomePageDetails = async (req, res, next) => {
 };
 const getTransactionHistory = async (req, res, next) => {
   try {
-    const {customerId } = req.params;
+    const { customerId } = req.params;
     const vendorId = req.id;
     const { transactionHistory } = await Customer.findOne({
       _id: customerId,
@@ -43,12 +43,15 @@ const getTransactionHistory = async (req, res, next) => {
 const addCustomer = async (req, res, next) => {
   try {
     const vendorId = req.id;
-    const customerDetail = { ...req.body, associatedVendor: vendorId, image: req.file?.filename || "" };
+    const customerDetail = {
+      ...req.body,
+      associatedVendor: vendorId,
+      image: req.file?.filename || "",
+    };
     const customer = await Customer.create(customerDetail);
-    await Vendor.findByIdAndUpdate(
-      vendorId,
-      { $push: { customers: customer.id } },
-    );
+    await Vendor.findByIdAndUpdate(vendorId, {
+      $push: { customers: customer.id },
+    });
     res
       .status(201)
       .json({ message: "New customer is created 😁", status: "success" });
@@ -58,7 +61,7 @@ const addCustomer = async (req, res, next) => {
 };
 const deleteCustomer = async (req, res, next) => {
   try {
-    const {customerId} = req.params;
+    const { customerId } = req.params;
     const vendorId = req.id;
     const { firstName, lastName, image } = await Customer.findByIdAndDelete(
       customerId
@@ -66,11 +69,13 @@ const deleteCustomer = async (req, res, next) => {
     const vendor = await Vendor.findByIdAndUpdate(vendorId, {
       $pull: { customers: customerId },
     });
-    try{
-      await fs.promises.unlink(path.join("./uploads", image))
-    }
-    catch(cleanUpErr){
-      res.json({status: "error", message: "Could not clean up customer image"})
+    try {
+      if (image) await fs.promises.unlink(path.join("./uploads", image));
+    } catch (cleanUpErr) {
+      res.json({
+        status: "error",
+        message: "Could not clean up customer image",
+      });
     }
     res.json({
       message: `Deleted Customer, ${firstName} ${lastName} 😁`,
@@ -82,7 +87,7 @@ const deleteCustomer = async (req, res, next) => {
 };
 const payUdharo = async (req, res, next) => {
   try {
-    const {customerId } = req.params;
+    const { customerId } = req.params;
     const vendorId = req.id;
     const { amount } = req.body;
     const remark = `Repaid NPR ${amount}`;
@@ -115,22 +120,30 @@ const payUdharo = async (req, res, next) => {
 };
 const uploadCustomerImage = async (req, res, next) => {
   try {
-    const {customerId} = req.params
+    const { customerId } = req.params;
     if (!req.id || !req.file?.filename) {
       throw new Error(`No ${!req.id ? "customer id" : "filename"} found`);
     }
-    const {image: customerImage} = await Customer.findByIdAndUpdate(customerId, { image: req.file.filename }).select("image");
-    try{
-      if(customerImage){
-        await fs.promises.unlink(path.join(req.file.destination, customerImage))
+    const { image: customerImage } = await Customer.findByIdAndUpdate(
+      customerId,
+      { image: req.file.filename }
+    ).select("image");
+    try {
+      if (customerImage) {
+        await fs.promises.unlink(
+          path.join(req.file.destination, customerImage)
+        );
       }
-    }catch(err){
-      console.log("Error cleaning up previous customer image")
-      next(err)
+    } catch (err) {
+      console.log("Error cleaning up previous customer image");
+      next(err);
     }
     res
       .status(200)
-      .json({ message: "customer image uploaded successfully", path: req.file.filename });
+      .json({
+        message: "customer image uploaded successfully",
+        path: req.file.filename,
+      });
   } catch (err) {
     try {
       if (req.file?.path) await fs.promises.unlink(req.file.path);
@@ -147,5 +160,5 @@ export {
   addCustomer,
   deleteCustomer,
   payUdharo,
-  uploadCustomerImage
+  uploadCustomerImage,
 };
