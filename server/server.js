@@ -16,7 +16,6 @@ dotenv.config();
 const app = express();
 //Connect to the database
 connectDB();
-//CORS-enabled for all origins
 
 //make uploads directory if it doesn't exist
 if (!fs.existsSync("./uploads")) {
