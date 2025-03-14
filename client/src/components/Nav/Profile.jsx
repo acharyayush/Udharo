@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { BiSolidUserCircle } from "react-icons/bi"
 import { MdArrowDropDownCircle } from "react-icons/md"
-import DropDown from "./DropDown"
+import Dropdown from "./Dropdown"
 import { twMerge } from "tailwind-merge"
 import { handleLogout } from "../../apis/auth"
 import { useNavigate } from "react-router-dom"
@@ -65,7 +65,7 @@ const Profile = ({ className }) => {
         )}
       </div>
       {isOpen && (
-        <DropDown
+        <Dropdown
           onClose={closeDropDown}
           onLogout={onLogout}
           onClick={stayAsItIs}
