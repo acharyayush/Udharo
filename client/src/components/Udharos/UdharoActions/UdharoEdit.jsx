@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom"
-import CustomerProfile from "../../customer/CustomerProfile"
+import CustomerProfile from "../../Customer/CustomerProfile"
 import UdharoSummary from "./UdharoSummary"
 import UdharoPay from "./UdharoPay"
 import UdharoTable from "./UdharoTable"
