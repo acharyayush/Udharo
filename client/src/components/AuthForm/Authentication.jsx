@@ -1,9 +1,18 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Button from "../Shared/Button"
 import LoginForm from "./LoginForm"
 import SignupForm from "./SignupForm"
+import { useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
 const Authentication = () => {
+  const navigate = useNavigate()
+  const {isLoggedIn} = useSelector((state)=>state.vendor)
   const [formType, setFormType] = useState("Login")
+  useEffect(()=>{
+    if(isLoggedIn){
+      navigate("/")
+    }
+  }, [isLoggedIn])
   return (
     <div
       className="authentication grid min-h-screen place-content-center bg-secondary"

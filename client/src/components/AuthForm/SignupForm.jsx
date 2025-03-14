@@ -6,10 +6,8 @@ import { handleSignup } from "../../apis/auth"
 import showToast from "../../utils/toast"
 import { addVendorInfo, setLoggedIn } from "../../store/VendorSlice"
 import { useDispatch } from "react-redux"
-import { useNavigate } from "react-router-dom"
 const SignupForm = ({ className }) => {
   const dispatch = useDispatch()
-  const navigate = useNavigate()
   const initialState = {
     firstName: "",
     lastName: "",
@@ -23,7 +21,6 @@ const SignupForm = ({ className }) => {
       const data = await handleSignup(userDetails)
       dispatch(addVendorInfo(data))
       dispatch(setLoggedIn(true))
-      navigate("/")
     } catch (err) {
       console.log(err)
       if (err.response) {
