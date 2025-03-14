@@ -24,3 +24,17 @@ html {
   min-height: 45px !important;
   background-color: #ef4444 !important;
 }
+
+/*Scrollbar styling*/
+html::-webkit-scrollbar {
+  width: 1vw;
+}
+html::-webkit-scrollbar-thumb {
+  background-color: #047857;
+  border: 2px solid #eaeaea;
+  border-radius: 10px;
+}
+html::-webkit-scrollbar-track {
+  background-color: #eaeaea;
+  border-radius: 10px;
+}
