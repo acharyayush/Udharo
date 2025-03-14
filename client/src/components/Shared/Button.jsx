@@ -1,14 +1,32 @@
 import { Link } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
-const CustomLink = ({ to, isDisable, className, onClick, children }) => {
+const CustomLink = ({
+  to,
+  isDisable,
+  className,
+  onClick,
+  children,
+  submittable,
+}) => {
   if (isDisable) {
     return <span className={twMerge(className, "opacity-75")}>{children}</span>
   }
-
+  if (to)
+    return (
+      <Link to={to} className={className} onClick={onClick}>
+        {children}
+      </Link>
+    )
+  if (submittable)
+    return (
+      <button className={className} onClick={onClick}>
+        {children}
+      </button>
+    )
   return (
-    <Link to={to} className={className} onClick={onClick}>
+    <span className={className} onClick={onClick}>
       {children}
-    </Link>
+    </span>
   )
 }
 
@@ -21,9 +39,10 @@ const Button = ({
   iconClass,
   onClick,
   isDisable,
+  submittable
 }) => {
   const classes = twMerge(
-    "inline-flex items-center bg-primary text-white font-bold tracking-wide py-2 px-4 rounded text-base",
+    "inline-flex items-center bg-primary text-white font-bold tracking-wide py-2 px-4 rounded text-base cursor-pointer",
     className
   )
   iconClass = twMerge(`${isTrailingIcon ? "ml-1" : "mr-1"}`, iconClass)
@@ -52,6 +71,7 @@ const Button = ({
       to={destination}
       onClick={onClick}
       isDisable={isDisable}
+      submittable={submittable}
     >
       {renderBtnValue()}
     </CustomLink>

@@ -10,6 +10,7 @@ const Modal = ({
   className,
   submitClass,
   isSubmissionPending,
+  submitValForPending,
   children,
 }) => {
   const nodeRef = useRef(null)
@@ -29,7 +30,7 @@ const Modal = ({
           {children}
           <div className="btns my-4 text-center">
             <Button
-              className=" cancelBtn rounded-md border-2  border-gray-900 bg-transparent px-5 py-[7px] font-medium text-gray-900 duration-200 hover:bg-gray-900 hover:text-white sm:text-sm"
+              className="cancelBtn rounded-md border-2  border-gray-900 bg-transparent px-5 py-[7px] font-medium text-gray-900 duration-200 hover:bg-gray-900 hover:text-white sm:text-sm"
               onClick={() => {
                 closeModal()
               }}
@@ -42,7 +43,7 @@ const Modal = ({
                   submitClass
                 )}
                 onClick={onSubmit}
-                value={submitVal}
+                value={!isSubmissionPending ? submitVal : submitValForPending}
                 isDisable={isSubmissionPending}
               />
             )}

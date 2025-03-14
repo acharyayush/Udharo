@@ -16,26 +16,24 @@ const CustomerCreate = () => {
   })
   const [inputImage, setInputImage] = useState(null)
   const { mutate: createCustomer, isPending } = useCustomerCreate()
-  const handleFormSubmit = () => {
-    //handling front end customerDetail validation
-    // .............
-    //validation finishes
-    const detail = {...customerDetail, customerImage: inputImage}
+  const handleFormSubmit = (e) => {
+    e.preventDefault()
+    const detail = { ...customerDetail, customerImage: inputImage }
     createCustomer(detail, {
       onSuccess: (data) => {
         navigate("/")
         toast(data.status, data.message)
       },
-      onError: (err)=>{
+      onError: (err) => {
         console.log(err.message)
         toast("error", "Error creating customer")
-      }
+      },
     })
   }
   const handleCustomerDetailChange = (e) => {
     const phoneRegex = /^\d{0,10}$/
-    if (e.target.name === "phoneNumber" && !phoneRegex.test(e.target.value)){
-      return;
+    if (e.target.name === "phoneNumber" && !phoneRegex.test(e.target.value)) {
+      return
     }
     setCustomerDetail({
       ...customerDetail,
@@ -43,12 +41,13 @@ const CustomerCreate = () => {
     })
   }
   return (
-    <form onSubmit={(e) => e.preventDefault()}>
+    <form onSubmit={handleFormSubmit}>
       <div className="mx-auto my-12 grid max-w-[700px] grid-cols-2 gap-10 px-4">
         <FormFieldRow
           name={"firstName"}
           label={"First Name"}
           className={"sm:col-span-2"}
+          isRequired={true}
           inputValue={customerDetail.firstName}
           onChange={handleCustomerDetailChange}
         />
@@ -56,6 +55,7 @@ const CustomerCreate = () => {
           name={"lastName"}
           label={"Last Name"}
           className={"sm:col-span-2"}
+          isRequired={true}
           inputValue={customerDetail.lastName}
           onChange={handleCustomerDetailChange}
         />
@@ -63,6 +63,7 @@ const CustomerCreate = () => {
           name={"phoneNumber"}
           label={"Phone Number"}
           className={" col-span-2"}
+          isRequired={true}
           inputValue={customerDetail.phoneNumber}
           onChange={handleCustomerDetailChange}
         />{" "}
@@ -71,18 +72,17 @@ const CustomerCreate = () => {
           label={"Customer Image"}
           isOptional
           className="col-span-2"
-          //this need to be managed later
           setInputImage={setInputImage}
         />
         <Button
+          submittable={true}
           className={
             "col-span-2 justify-self-center rounded-full px-10 text-lg"
           }
-          value={"Submit"}
-          Icon={IoMdCloudUpload}
+          value={!isPending ? "Submit" : "Submitting..."}
+          Icon={!isPending ? IoMdCloudUpload : null}
           iconClass={"text-xl ml-2"}
           isTrailingIcon
-          onClick={handleFormSubmit}
           isDisable={isPending}
         />
       </div>

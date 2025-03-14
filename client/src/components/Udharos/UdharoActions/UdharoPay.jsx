@@ -42,7 +42,7 @@ const UdharoPay = () => {
       />
       <Button
         className={"mt-2 w-fit sm:ml-1 sm:mt-0"}
-        value={"Repay"}
+        value={!isPending ? "Repay" : "Repaying..."}
         onClick={handleUdharoPaySubmit}
         isDisable={isPending}
       />

@@ -173,6 +173,7 @@ const UdharoTable = ({ className, readonly, products }) => {
           )
         }}
         submitVal={"Delete"}
+        submitValForPending={"Deleting..."}
         isSubmissionPending={isPending}
       >
         <GoAlertFill className="mx-auto text-8xl text-red-500 sm:text-6xl" />

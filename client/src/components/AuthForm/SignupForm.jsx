@@ -4,7 +4,11 @@ import EyeIcon from "../Shared/EyeIcon"
 import FormFieldRow from "../Shared/FormFieldRow"
 import { handleSignup } from "../../apis/auth"
 import showToast from "../../utils/toast"
-import { addVendorInfo, resetVendorInfo, setLoggedIn } from "../../store/VendorSlice"
+import {
+  addVendorInfo,
+  resetVendorInfo,
+  setLoggedIn,
+} from "../../store/VendorSlice"
 import { useDispatch } from "react-redux"
 const SignupForm = ({ className }) => {
   const dispatch = useDispatch()
@@ -16,14 +20,19 @@ const SignupForm = ({ className }) => {
     password: "",
   }
   const [userDetails, setUserDetails] = useState(initialState)
-  const onSignUp = async () => {
+  const [isPending, setIsPending] = useState(false)
+  const onSignUp = async (e) => {
     try {
+      e.preventDefault()
+      setIsPending(true)
       const data = await handleSignup(userDetails)
+      setIsPending(false)
       dispatch(resetVendorInfo())
       dispatch(addVendorInfo(data))
       dispatch(setLoggedIn(true))
     } catch (err) {
       console.log(err)
+      setIsPending(false)
       if (err.response) {
         showToast("error", err.response.data.message)
       } else {
@@ -34,8 +43,8 @@ const SignupForm = ({ className }) => {
   const [showPassword, setShowPassword] = useState(false)
   const handleUserDetailChange = (e) => {
     const phoneRegex = /^\d{0,10}$/
-    if (e.target.name === "phone" && !phoneRegex.test(e.target.value)){
-      return;
+    if (e.target.name === "phone" && !phoneRegex.test(e.target.value)) {
+      return
     }
     setUserDetails({
       ...userDetails,
@@ -43,7 +52,7 @@ const SignupForm = ({ className }) => {
     })
   }
   return (
-    <form action="/login" method="post" className={className}>
+    <form className={className} onSubmit={onSignUp}>
       <div className="name grid grid-cols-2 gap-4">
         <div className="mb-4">
           <label
@@ -53,6 +62,7 @@ const SignupForm = ({ className }) => {
             First Name
           </label>
           <FormFieldRow
+            isRequired={true}
             inputType="text"
             placeholder="First name"
             name="firstName"
@@ -70,6 +80,7 @@ const SignupForm = ({ className }) => {
             Last Name
           </label>
           <FormFieldRow
+            isRequired={true}
             inputType="text"
             placeholder="Last name"
             name="lastName"
@@ -89,6 +100,7 @@ const SignupForm = ({ className }) => {
           Email Address
         </label>
         <FormFieldRow
+          isRequired={true}
           inputType="email"
           placeholder="Enter your email"
           name="email"
@@ -107,6 +119,7 @@ const SignupForm = ({ className }) => {
           Phone Number
         </label>
         <FormFieldRow
+          isRequired={true}
           inputType="text"
           placeholder="Enter your Phone Number"
           name="phone"
@@ -125,6 +138,7 @@ const SignupForm = ({ className }) => {
           Password
         </label>
         <FormFieldRow
+          isRequired={true}
           inputType={showPassword ? "text" : "password"}
           placeholder="Enter your password"
           name="password"
@@ -141,9 +155,14 @@ const SignupForm = ({ className }) => {
       </div>
 
       <Button
-        onClick={onSignUp}
+        submittable={true}
+        isDisable={isPending}
         value="Signup"
-        className="mb-4 w-full rounded-md border-2 border-primary bg-primary py-1 text-center text-lg font-medium text-white duration-200 hover:bg-primary/90 xsm:text-base"
+        className={`mb-5 w-full rounded-md border-2 py-1 text-center text-lg font-medium text-white duration-200 xsm:text-base ${
+          !isPending
+            ? "border-primary bg-primary"
+            : "border-primary/70 bg-primary/70"
+        }`}
       />
     </form>
   )

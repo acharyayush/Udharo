@@ -25,7 +25,8 @@ const UdharoAddForm = ({ className }) => {
       [e.target.name]: e.target.value,
     })
   }
-  const handleProductAdd = () => {
+  const handleProductAdd = (e) => {
+    e.preventDefault()
     const detail = {
       ...productDetail,
       customerId,
@@ -42,12 +43,13 @@ const UdharoAddForm = ({ className }) => {
     })
   }
   return (
-    <form onSubmit={(e) => e.preventDefault()} className={className}>
+    <form onSubmit={handleProductAdd} className={className}>
       <h1 className="text-left text-3xl font-bold uppercase text-primary sm:text-2xl">
         Add a product
       </h1>
       <div className="mx-auto my-8 grid max-w-full grid-cols-2 gap-10 xsm:px-0">
         <FormFieldRow
+          isRequired={true}
           name={"name"}
           label={"Product"}
           className={"col-span-2"}
@@ -57,6 +59,7 @@ const UdharoAddForm = ({ className }) => {
           inputClassName={"mt-1"}
         />
         <FormFieldRow
+          isRequired={true}
           name={"quantity"}
           label={"Quantity"}
           className={"sm:col-span-2"}
@@ -66,6 +69,7 @@ const UdharoAddForm = ({ className }) => {
           inputClassName={"mt-1"}
         />
         <FormFieldRow
+          isRequired={true}
           name={"unitPrice"}
           label={"Unit Price (NPR)"}
           className={"sm:col-span-2"}
@@ -75,11 +79,11 @@ const UdharoAddForm = ({ className }) => {
           inputClassName={"mt-1"}
         />
         <Button
+          submittable={true}
           className={
-            "col-span-2 cursor-pointer justify-self-center rounded-full px-14 text-lg"
+            "col-span-2 justify-self-center rounded-full px-14 text-lg"
           }
-          value={"Add"}
-          onClick={handleProductAdd}
+          value={!isPending ? "Add" : "Adding..."}
           isDisable={isPending}
         />
       </div>

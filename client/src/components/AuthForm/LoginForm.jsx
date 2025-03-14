@@ -4,7 +4,11 @@ import { Link } from "react-router-dom"
 import EyeIcon from "../Shared/EyeIcon"
 import FormFieldRow from "../Shared/FormFieldRow"
 import { handleLogin } from "../../apis/auth"
-import { addVendorInfo, resetVendorInfo, setLoggedIn } from "../../store/VendorSlice"
+import {
+  addVendorInfo,
+  resetVendorInfo,
+  setLoggedIn,
+} from "../../store/VendorSlice"
 import { useDispatch } from "react-redux"
 import showToast from "../../utils/toast"
 const LoginForm = ({ className, setFormType }) => {
@@ -14,6 +18,7 @@ const LoginForm = ({ className, setFormType }) => {
     password: "",
   })
   const [showPassword, setShowPassword] = useState(false)
+  const [isPending, setIsPending] = useState(false)
   const handleUserDetailChange = (e) => {
     setUserDetails({
       ...userDetails,
@@ -24,14 +29,18 @@ const LoginForm = ({ className, setFormType }) => {
     e.preventDefault()
     setFormType("Signup")
   }
-  const onLogin = async () => {
+  const onLogin = async (e) => {
     try {
+      e.preventDefault()
+      setIsPending(true)
       const data = await handleLogin(userDetails)
+      setIsPending(false)
       dispatch(resetVendorInfo())
       dispatch(addVendorInfo(data))
       dispatch(setLoggedIn(true))
     } catch (err) {
       console.log(err)
+      setIsPending(false)
       if (err.response) {
         showToast("error", err.response.data.message)
       } else {
@@ -40,7 +49,7 @@ const LoginForm = ({ className, setFormType }) => {
     }
   }
   return (
-    <form action="/login" method="post" className={className}>
+    <form className={className} onSubmit={onLogin}>
       <div className="mb-5 mt-4">
         <label
           htmlFor="email"
@@ -49,6 +58,7 @@ const LoginForm = ({ className, setFormType }) => {
           Email Address
         </label>
         <FormFieldRow
+          isRequired={true}
           inputType="email"
           placeholder="Enter your email"
           name="email"
@@ -67,6 +77,7 @@ const LoginForm = ({ className, setFormType }) => {
           Password
         </label>
         <FormFieldRow
+          isRequired={true}
           inputType={showPassword ? "text" : "password"}
           placeholder="Enter your password"
           name="password"
@@ -83,9 +94,14 @@ const LoginForm = ({ className, setFormType }) => {
       </div>
 
       <Button
-        onClick={onLogin}
+        submittable={true}
+        isDisable={isPending}
         value="Login"
-        className="mb-5 w-full rounded-md border-2 border-primary bg-primary py-1 text-center text-lg font-medium text-white duration-200 hover:bg-primary/90  xsm:text-base"
+        className={`mb-5 w-full rounded-md border-2 py-1 text-center text-lg font-medium text-white duration-200 xsm:text-base ${
+          !isPending
+            ? "border-primary bg-primary"
+            : "border-primary/70 bg-primary/70"
+        }`}
       />
 
       <p className="mb-6 text-center text-sm">

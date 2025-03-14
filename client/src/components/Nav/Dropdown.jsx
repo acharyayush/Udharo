@@ -9,7 +9,7 @@ import { useAvatarUpload } from "../../customHooks/mutate"
 import { addAvatar } from "../../store/VendorSlice"
 import Avatar, { AvatarOverlay } from "../Shared/Avatar"
 import showToast from "../../utils/toast"
-const DropDown = ({ onClose, onClick, onLogout }) => {
+const DropDown = ({ onClick, onLogout }) => {
   const dispatch = useDispatch()
   const { firstName, lastName, avatar } = useSelector((state) => state.vendor)
   const fileInputRef = useRef(null)

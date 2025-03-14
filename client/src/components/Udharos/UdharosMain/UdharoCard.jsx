@@ -32,7 +32,9 @@ const UdharoCard = ({
     if (customerImage) {
       return (
         <img
-          src={`${import.meta.env.VITE_SERVER_BASEURL}/uploads/${customerImage}`}
+          src={`${
+            import.meta.env.VITE_SERVER_BASEURL
+          }/uploads/${customerImage}`}
           alt="customer img"
           className="h-24 w-24 rounded-full object-cover"
         />
@@ -91,6 +93,7 @@ const UdharoCard = ({
           )
         }
         submitVal={"Delete"}
+        submitValForPending={"Deleting..."}
         isSubmissionPending={isPending}
       >
         <GoAlertFill className="mx-auto text-8xl text-red-500 sm:text-6xl" />
