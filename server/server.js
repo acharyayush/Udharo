@@ -25,7 +25,7 @@ if (!fs.existsSync("./uploads")) {
 
 app.use(
   cors({
-    origin: process.env.CLIENT_BASE_URL || "http://localhost:3000",
+    origin: process.env.CLIENT_BASE_URL,
     credentials: true,
   })
 );
