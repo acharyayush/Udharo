@@ -145,7 +145,7 @@ const SignupForm = ({ className }) => {
       <Button
         onClick={onSignUp}
         value="Signup"
-        className="mb-4 w-full rounded-md border-2 border-brightGreen bg-brightGreen py-1 text-center text-lg font-medium text-white duration-200 hover:bg-green-500 xsm:text-base"
+        className="mb-4 w-full rounded-md border-2 border-primary bg-primary py-1 text-center text-lg font-medium text-white duration-200 hover:bg-primary/90 xsm:text-base"
       />
     </form>
   )

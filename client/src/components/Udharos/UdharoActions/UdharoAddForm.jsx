@@ -43,7 +43,7 @@ const UdharoAddForm = ({ className }) => {
   }
   return (
     <form onSubmit={(e) => e.preventDefault()} className={className}>
-      <h1 className="text-left text-3xl font-bold uppercase text-brightGreen sm:text-2xl">
+      <h1 className="text-left text-3xl font-bold uppercase text-primary sm:text-2xl">
         Add a product
       </h1>
       <div className="mx-auto my-8 grid max-w-full grid-cols-2 gap-10 xsm:px-0">

@@ -38,7 +38,7 @@ const UdharoCard = ({
         />
       )
     }
-    return <BiUserCircle className="text-8xl text-brightGreen sm:mb-2" />
+    return <BiUserCircle className="text-8xl text-primary sm:mb-2" />
   }
 
   return (
@@ -67,7 +67,7 @@ const UdharoCard = ({
           />
           <Button
             className={
-              "bg-green-500 px-3 font-medium duration-200 hover:bg-green-600"
+              "bg-primary px-3 font-medium duration-200 hover:bg-primary/90"
             }
             value={screenSize > 767 || screenSize < 639 ? "Edit" : ""}
             Icon={BiEdit}

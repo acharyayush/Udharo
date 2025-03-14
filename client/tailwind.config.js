@@ -5,8 +5,8 @@ export default {
     extend: {
       colors: {
         bgColor: "#F5FCFF",
-        fadedGreen: "#CAEEC2",
-        brightGreen: "#20d563",
+        secondary: "#DFF6ED",
+        primary: "#047857",
       },
     },
     screens: {

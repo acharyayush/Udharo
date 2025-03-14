@@ -123,12 +123,12 @@ const UdharoTable = ({ className, readonly, products }) => {
         )}
       >
         <div className="mx-auto w-fit">
-          <h1 className="mb-4 text-left text-2xl font-bold uppercase text-brightGreen">
+          <h1 className="mb-4 text-left text-2xl font-bold uppercase text-primary">
             Products
           </h1>
           <table className="rounded-md shadow-md">
             <thead>
-              <tr className="bg-brightGreen text-center text-white">
+              <tr className="bg-primary text-center text-white">
                 <th className="min-w-[70px] whitespace-nowrap border-r px-4 py-2 text-center text-lg font-medium">
                   SN
                 </th>

@@ -37,7 +37,7 @@ const PhotoInput = ({ label, isOptional, className, setInputImage }) => {
         {label} {isOptional && "(optional)"}
       </label>
       <div
-        className="photoContainer relative mt-1.5 h-[350px] rounded-lg border-2 border-dashed border-brightGreen p-6"
+        className="photoContainer relative mt-1.5 h-[350px] rounded-lg border-2 border-dashed border-primary p-6"
         onDrop={handleFileSelection}
       >
         {!selectedFile && !showDropText && (
@@ -45,7 +45,7 @@ const PhotoInput = ({ label, isOptional, className, setInputImage }) => {
             className="beforePreview text-center"
             onDragOver={() => setShowDropText(true)}
           >
-            <BiPhotoAlbum className="mx-auto my-4 text-9xl text-brightGreen" />
+            <BiPhotoAlbum className="mx-auto my-4 text-9xl text-primary" />
             <input
               type="file"
               ref={fileInput}

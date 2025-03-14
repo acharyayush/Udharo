@@ -48,9 +48,9 @@ const UdharosMain = () => {
             <SearchInput
               className={"sm:self-end"}
               inputClassName={
-                "w-[300px] xsm:w-[210px] sm:w-[250px] border-brightGreen py-[0.3rem] text-base sm:text-sm"
+                "w-[300px] xsm:w-[210px] sm:w-[250px] border-primary py-[0.3rem] text-base sm:text-sm"
               }
-              iconClassName={"text-brightGreen"}
+              iconClassName={"text-primary"}
               value={searchValue}
               setSearchValue={setSearchValue}
             />
@@ -63,7 +63,7 @@ const UdharosMain = () => {
             />
           </div>
         )}
-        <h1 className="my-2 text-3xl font-bold text-brightGreen">Udharos</h1>
+        <h1 className="my-2 text-3xl font-bold text-primary">Udharos</h1>
         <UdharoList
           screenSize={screenSize}
           customers={data?.filteredCustomer ?? initialFilteredCustomer}

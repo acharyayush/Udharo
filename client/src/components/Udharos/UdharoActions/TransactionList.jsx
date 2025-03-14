@@ -22,7 +22,7 @@ const TransactionList = () => {
   }
   return (
     <div className="TransactionList mx-auto max-w-[740px]">
-      <h1 className="mb-4 mt-14 text-left text-2xl font-bold uppercase text-brightGreen sm:text-2xl">
+      <h1 className="mb-4 mt-14 text-left text-2xl font-bold uppercase text-primary sm:text-2xl">
         Transaction History
       </h1>
       {!data && <TransactionCardSkeleton count={5} />}

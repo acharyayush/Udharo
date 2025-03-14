@@ -86,14 +86,14 @@ const LoginForm = ({ className, setFormType }) => {
       <Button
         onClick={onLogin}
         value="Login"
-        className="mb-5 w-full rounded-md border-2 border-brightGreen bg-brightGreen py-1 text-center text-lg font-medium text-white duration-200 hover:bg-green-500  xsm:text-base"
+        className="mb-5 w-full rounded-md border-2 border-primary bg-primary py-1 text-center text-lg font-medium text-white duration-200 hover:bg-primary/90  xsm:text-base"
       />
 
       <p className="mb-6 text-center text-sm">
         <span>New Here?</span>
         <Link
           onClick={handleFormType}
-          className="font-medium text-brightGreen underline"
+          className="font-medium text-primary underline"
         >
           {" "}
           Signup now

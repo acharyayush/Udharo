@@ -14,7 +14,7 @@ html {
 /* react toastify styling */
 .successToast {
   min-height: 45px !important;
-  background-color: #24cf85 !important;
+  background-color: #047857 !important;
 }
 .successProgressBar,
 .errorProgressBar {

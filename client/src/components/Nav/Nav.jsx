@@ -4,7 +4,7 @@ import { useSelector } from "react-redux"
 const Nav = () => {
   const { isLoggedIn } = useSelector((state) => state.vendor)
   return (
-    <section className={`mt-auto h-16 bg-brightGreen`}>
+    <section className={`mt-auto h-16 bg-primary`}>
       <nav className="m-auto flex h-full w-11/12 items-center justify-between p-3">
         <div className="clgLogoAndName">
           <Link to="" className="justiy-center flex items-center">

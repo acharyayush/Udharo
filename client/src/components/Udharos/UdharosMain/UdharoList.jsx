@@ -7,7 +7,7 @@ const UdharoList = ({ customers, screenSize, isSearching }) => {
     return (
       <h1 className="mt-2 text-lg">
         Currently, there are no customers with udharo.{" "}
-        <Link to="/customers/add" className="font-bold text-brightGreen">
+        <Link to="/customers/add" className="font-bold text-primary">
           Add
         </Link>{" "}
         customers to your udharo list!

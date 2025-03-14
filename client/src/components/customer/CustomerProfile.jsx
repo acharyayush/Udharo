@@ -46,7 +46,7 @@ const CustomerProfile = ({ id, name, phoneNumber, imgName, udharoLeft }) => {
       >
         {!imgName ? (
           <>
-            <BiSolidUserCircle className="text-[12rem] sm:text-[9rem]"></BiSolidUserCircle>
+            <BiSolidUserCircle className="text-[12rem] sm:text-[9rem] text-gray-700"></BiSolidUserCircle>
             {!isPending ? (
               <AvatarOverlay className={"hidden rounded-full group-hover:grid"}>
                 <IoMdAdd className="text-[6rem] text-black sm:text-[3rem]" />
@@ -83,7 +83,7 @@ const CustomerProfile = ({ id, name, phoneNumber, imgName, udharoLeft }) => {
       <section className="CustomerProfileSection 0 mx-auto my-16 max-w-[900px] rounded-lg pb-6 text-gray-900 shadow-lg">
         <div
           className={`customerImg relative m-auto h-24 w-full rounded-md ${
-            name && "bg-brightGreen"
+            name && "bg-primary"
           }`}
         >
           {name ? (

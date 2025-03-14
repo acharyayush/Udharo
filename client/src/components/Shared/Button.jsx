@@ -23,7 +23,7 @@ const Button = ({
   isDisable,
 }) => {
   const classes = twMerge(
-    "inline-flex items-center bg-brightGreen text-white font-bold tracking-wide py-2 px-4 rounded text-base",
+    "inline-flex items-center bg-primary text-white font-bold tracking-wide py-2 px-4 rounded text-base",
     className
   )
   iconClass = twMerge(`${isTrailingIcon ? "ml-1" : "mr-1"}`, iconClass)
